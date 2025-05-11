@@ -16,13 +16,20 @@ function App() {
     }, []);
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<WelcomePage/>} />
-                <Route path="/set-of-questions" element={<SetOfQuestionsPage />} />
-                <Route path="/learining-page" element={<LearningPage/>} />
-            </Routes>
-        </Router>
+        <div style={{
+            maxWidth: '1000px',
+            justifyContent: 'center',
+            margin: 'auto',
+            background: 'black'
+        }}>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<WelcomePage/>} />
+                    <Route path="/set-of-questions" element={<SetOfQuestionsPage />} />
+                    <Route path="/learining-page" element={<LearningPage/>} />
+                </Routes>
+            </Router>
+        </div>
     );
 }
 

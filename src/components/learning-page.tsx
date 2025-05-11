@@ -1,11 +1,13 @@
 import {SetStateAction, useEffect, useState} from "react";
 import {PossibleAnswer, Question, StorageObject} from "../model/model";
 import {useLocation} from "react-router-dom";
+import AnswerField from "./AnswerField";
 
 export const LearningPage = () => {
     const location = useLocation();
-
+    console.log(location.state.inputParams);
     const [params, setParams] = useState(location.state);
+
     let [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
     const [category, setCategory] = useState('');
     const [isSummaryVisible, setIsSummaryVisible] = useState(false);
@@ -197,7 +199,25 @@ export const LearningPage = () => {
         }
     }
 
-    return (<div>{actualQuestion.value}{actualQuestion.paragraph} {category}</div>);
+    return (<div>
+        {actualQuestion.value}{actualQuestion.paragraph}
+
+        <AnswerField gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].gradient}
+                     option={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].id}
+                     possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].value}
+                     isPicked={false}/>
+
+        <AnswerField gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].gradient}
+                     option={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].id}
+                     possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].value}
+                     isPicked={false}/>
+
+        <AnswerField gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].gradient}
+                     option={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].id}
+                     possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].value}
+                     isPicked={false}/>
+
+    </div>);
 }
 
 export default LearningPage;

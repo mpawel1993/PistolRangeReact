@@ -11,9 +11,7 @@ const SetOfQuestionsPage = () => {
     const handleNavigateToAll = (categoryName:string) => {
         let storageKey = 'all';
         navigate('/learining-page', {
-            state: {
-                inputParams: {questions: baseQuestions, categoryName, storageKey},
-            }
+            state: {questions: baseQuestions, categoryName, storageKey}
         });
     }
 

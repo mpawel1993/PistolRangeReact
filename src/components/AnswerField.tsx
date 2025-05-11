@@ -1,15 +1,17 @@
-export const Field = ({text}: {text:string}) => {
 
+// @ts-ignore
+export const AnswerField = ({option, possibleAnswer, gradientColours, isPicked}) => {
     return (<div style={{
         background: "linear-gradient(to right, #ff7e5f, #feb47b)",
         display: "flex",
-        alignItems: "center",
         justifyContent: "center",
         color: "white",
         fontSize: "20px",
         flexDirection: 'row',
-        padding: 15,
-        margin: 10,
-    }}>{text}</div>);
+        padding: 3,
+        alignItems: 'center'
+    }}>
+        {possibleAnswer}
+    </div>);
 }
-export default Field;
+export default AnswerField;
