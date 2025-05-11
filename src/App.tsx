@@ -3,19 +3,26 @@ import './App.css';
 import WelcomePage from "./components/welcome-page";
 import {useSetAtom} from "jotai";
 import {allQuestionsAtom} from "./atoms";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SetOfQuestionsPage from "./components/set-of-questions-page";
+import LearningPage from "./components/learning-page";
 
 function App() {
 
     const setAllQuestions = useSetAtom(allQuestionsAtom);
 
     useEffect(() => {
-        return setAllQuestions(JSON.parse(JSON.stringify(require('../src/assets/questionList.json'))));
+        setAllQuestions(JSON.parse(JSON.stringify(require('../src/assets/questionList.json'))));
     }, []);
 
     return (
-        <div>
-            <WelcomePage/>
-        </div>
+        <Router>
+            <Routes>
+                <Route path="/" element={<WelcomePage/>} />
+                <Route path="/set-of-questions" element={<SetOfQuestionsPage />} />
+                <Route path="/learining-page" element={<LearningPage/>} />
+            </Routes>
+        </Router>
     );
 }
 

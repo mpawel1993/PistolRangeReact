@@ -19,3 +19,8 @@ export interface StorageObject {
     questions: Question[];
     actualQuestion: Question;
 }
+
+export interface LearnPageParams {
+    questions: Question[],
+    categoryName: string,
+    storageKey: string}
