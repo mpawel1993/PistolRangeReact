@@ -46,7 +46,7 @@ export const ActivityPage = () => {
     }
 
     return (<div>
-        <div onClick={() => navigate('/setOfQuestions-page')}>
+        <div onClick={() => navigate('/set-of-questions')}>
             <Field text='NAUKA'/>
         </div>
         <div onClick={() => navigateToExam()}>

@@ -1,11 +1,14 @@
 import {SetStateAction, useEffect, useState} from "react";
 import {PossibleAnswer, Question, StorageObject} from "../model/model";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import AnswerField from "./answerField";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import HomeIcon from '@mui/icons-material/Home';
 
 export const LearningPage = () => {
     const location = useLocation();
-    console.log(location.state.inputParams);
+    const navigate = useNavigate();
     const [params, setParams] = useState(location.state);
 
     let [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
@@ -27,9 +30,9 @@ export const LearningPage = () => {
 
     //After Component Mount
     useEffect(() => {
-        let que = params.questions.map((x :any) => Object.assign({}, x));
-        que.map((a:any) => {
-            a.possibleAnswer.map((b:any) => b.gradient = ['#94c02b', '#71912a']);
+        let que = params.questions.map((x: any) => Object.assign({}, x));
+        que.map((a: any) => {
+            a.possibleAnswer.map((b: any) => b.gradient = ['#94c02b', '#71912a']);
         });
         setQuestions(que);
         setCategory(params.categoryName);
@@ -72,7 +75,7 @@ export const LearningPage = () => {
     }, [actualQuestion]);
 
     const handleQuit = () => {
-        // navigation.navigate('ActivityPage');
+        navigate('/activity-page');
     }
 
     const handlePickUp = (option: string) => {
@@ -199,27 +202,63 @@ export const LearningPage = () => {
         }
     }
 
+    // @ts-ignore
     return (<div>
         <div style={{color: 'red'}}>
             {actualQuestion.value}{actualQuestion.paragraph}
         </div>
 
-        <AnswerField gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].gradient}
-                     option={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].id}
-                     possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].value}
-                     isPicked={false}/>
+        <div onClick={() => handlePickUp('a')}>
+            <AnswerField disabled={actualQuestion.isButtonsDisabled}
+                         gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].gradient}
+                         option={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].id}
+                         possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].value}
+                         isPicked={false}/>
+        </div>
 
-        <AnswerField gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].gradient}
-                     option={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].id}
-                     possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].value}
-                     isPicked={false}/>
+        <div onClick={() => handlePickUp('b')}>
+            <AnswerField disabled={actualQuestion.isButtonsDisabled}
+                         gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].gradient}
+                         option={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].id}
+                         possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].value}
+                         isPicked={false}/>
+        </div>
 
-        <AnswerField gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].gradient}
-                     option={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].id}
-                     possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].value}
-                     isPicked={false}/>
+        <div onClick={() => handlePickUp('c')}>
+            <AnswerField disabled={actualQuestion.isButtonsDisabled}
+                         gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].gradient}
+                         option={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].id}
+                         possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].value}
+                         isPicked={false}/>
+        </div>
 
+        <div style={{display: 'flex', justifyContent: 'center'}}>
+            <button style={navButtonStyle}
+                onClick={() => handlePreviousQuestion()} disabled={previousDisabled}>
+                <ArrowBackIcon />
+            </button>
+            <button  style={navButtonStyle} onClick={() => handleQuit()}>
+                <HomeIcon />
+            </button>
+            <button style={navButtonStyle} onClick={() => handleNextQuestion()} disabled={nextButtonDisabled}>
+                <ArrowForwardIcon />
+            </button>
+        </div>
     </div>);
+}
+
+const navButtonStyle = {
+    padding: 15,
+    margin: 10,
+    fontFamily: 'Bahnschrift',
+    fontSize: 20,
+    background: "linear-gradient(to right, #94c02b, #71912a)",
+    border: 'none',
+    borderRadius: 10,
+    cursor: 'pointer',
+    outline: 'none',
+    width: '100%',
+    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)'
 }
 
 export default LearningPage;
