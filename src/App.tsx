@@ -8,6 +8,7 @@ import SetOfQuestionsPage from "./components/set-of-questions-page";
 import LearningPage from "./components/learning-page";
 import ActivityPage from "./components/activity-page";
 import ExamPage from "./components/exam-page";
+import EndOfModuleModal from "./components/end-of-module-modal";
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/learining-page" element={<LearningPage/>} />
                     <Route path="/activity-page" element={<ActivityPage/>} />
                     <Route path="/exam-page" element={<ExamPage/>} />
+                    <Route path="/end-of-module" element={<EndOfModuleModal/>} />
                 </Routes>
             </Router>
         </div>

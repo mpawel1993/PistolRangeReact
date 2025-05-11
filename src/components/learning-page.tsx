@@ -74,6 +74,12 @@ export const LearningPage = () => {
         }
     }, [actualQuestion]);
 
+    useEffect(() => {
+        if(isSummaryVisible){
+            navigate('/end-of-module')
+        }
+    }, [isSummaryVisible]);
+
     const handleQuit = () => {
         navigate('/activity-page');
     }
