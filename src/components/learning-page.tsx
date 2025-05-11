@@ -1,7 +1,7 @@
 import {SetStateAction, useEffect, useState} from "react";
 import {PossibleAnswer, Question, StorageObject} from "../model/model";
 import {useLocation} from "react-router-dom";
-import AnswerField from "./AnswerField";
+import AnswerField from "./answerField";
 
 export const LearningPage = () => {
     const location = useLocation();
