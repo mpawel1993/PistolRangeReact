@@ -1,15 +1,16 @@
 export const Field = ({text}: {text:string}) => {
 
     return (<div style={{
-        background: "linear-gradient(to right, #ff7e5f, #feb47b)",
+        background: "linear-gradient(to right, #94c02b, #71912a)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        color: "white",
-        fontSize: "20px",
         flexDirection: 'row',
         padding: 15,
         margin: 10,
+        fontFamily:'Bahnschrift',
+        fontSize: 20,
+        color: '#2b2a29'
     }}>{text}</div>);
 }
 export default Field;

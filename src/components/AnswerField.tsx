@@ -2,7 +2,7 @@
 // @ts-ignore
 export const AnswerField = ({option, possibleAnswer, gradientColours, isPicked}) => {
     return (<div style={{
-        background: "linear-gradient(to right, #ff7e5f, #feb47b)",
+        background: "linear-gradient(to right, {#ff7e5f, #feb47b})",
         display: "flex",
         justifyContent: "center",
         color: "white",

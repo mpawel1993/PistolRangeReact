@@ -8,7 +8,9 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-    <div style={{backgroundColor: 'black'}}>
+    <div style={{
+        background: 'black',
+        height: '100vh',}}>
         <React.StrictMode>
             <App />
         </React.StrictMode>

@@ -19,8 +19,7 @@ function App() {
         <div style={{
             maxWidth: '1000px',
             justifyContent: 'center',
-            margin: 'auto',
-            background: 'black'
+            margin: 'auto'
         }}>
             <Router>
                 <Routes>
