@@ -7,7 +7,7 @@ export const Field = ({text}: {text:string}) => {
         justifyContent: "center",
         flexDirection: 'row',
         padding: 15,
-        margin: 10,
+        marginBottom: 10,
         fontFamily:'Bahnschrift',
         fontSize: 20,
         color: '#2b2a29'

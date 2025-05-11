@@ -200,7 +200,9 @@ export const LearningPage = () => {
     }
 
     return (<div>
-        {actualQuestion.value}{actualQuestion.paragraph}
+        <div style={{color: 'red'}}>
+            {actualQuestion.value}{actualQuestion.paragraph}
+        </div>
 
         <AnswerField gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].gradient}
                      option={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].id}
