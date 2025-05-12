@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/PistolRangeReact/static/css/main.f855e6bc.css",
+    "main.js": "/PistolRangeReact/static/js/main.d6b6f8eb.js",
+    "static/js/453.5d24edda.chunk.js": "/PistolRangeReact/static/js/453.5d24edda.chunk.js",
+    "static/media/welcome_logo.png": "/PistolRangeReact/static/media/welcome_logo.fb624f18180d42e27088.png",
+    "index.html": "/PistolRangeReact/index.html",
+    "main.f855e6bc.css.map": "/PistolRangeReact/static/css/main.f855e6bc.css.map",
+    "main.d6b6f8eb.js.map": "/PistolRangeReact/static/js/main.d6b6f8eb.js.map",
+    "453.5d24edda.chunk.js.map": "/PistolRangeReact/static/js/453.5d24edda.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.d6b6f8eb.js"
+  ]
+}
