@@ -1,13 +1,16 @@
 import {useEffect, useRef, useState} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate, useNavigation} from "react-router-dom";
 import {PossibleAnswer, Question} from "../model/model";
 import AnswerField from "./answerField";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import HomeIcon from "@mui/icons-material/Home";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import RuleIcon from '@mui/icons-material/Rule';
+import ExamSummary from "./exam-summary";
+import HomeIcon from "@mui/icons-material/Home";
 
 export const ExamPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [params, setParams] = useState(location.state);
 
     const [questions, setQuestions] = useState([] as Question[]); //Filtered questions list
@@ -97,7 +100,7 @@ export const ExamPage = () => {
         setIsSummaryVisible(true);
         setWasSummaryDisplayed(true);
         if (wasSummaryDisplayed) {
-            // navigation.navigate('ActivityPage');
+            navigate('/activity-page')
         }
     }
 
@@ -183,9 +186,16 @@ export const ExamPage = () => {
     }
 
     return (<div>
-        <div style={{color: 'red'}}>
+        <br/>
+        {isExamSummarised ? <ExamSummary goodCount={goodAnswers} /> : <div/>}
+
+        <div style={{color: '#98c135'}}>{!isExamSummarised ? formattedTime : '--:--'}</div>
+
+        <div style={{color: '#98c135'}}>
+            <br/>
             {actualQuestion.value}{actualQuestion.paragraph}
         </div>
+        <br/>
 
         <div onClick={() => handlePickUp('a')}>
             <AnswerField disabled={actualQuestion.isButtonsDisabled}
@@ -211,13 +221,17 @@ export const ExamPage = () => {
         </div>
 
         <div style={{display: 'flex', justifyContent: 'center'}}>
-            <button style={navButtonStyle} onClick={handlePreviousQuestion} disabled={previousDisabled}>
+            <button style={navButtonStyle}
+                    onClick={() => handlePreviousQuestion()} disabled={previousDisabled}>
                 <ArrowBackIcon />
             </button>
-            <button style={navButtonStyle} onClick={handleQuit} disabled={previousDisabled}>
-                <HomeIcon />
-            </button>
-            <button style={navButtonStyle} onClick={handleNextQuestion} disabled={previousDisabled}>
+            {!wasSummaryDisplayed ? <button style={navButtonStyle} onClick={() => handleQuit()}>
+                    <RuleIcon/>
+                </button> :
+                <button style={navButtonStyle} onClick={() => handleQuit()}>
+                    <HomeIcon/>
+                </button>}
+            <button style={navButtonStyle} onClick={() => handleNextQuestion()} disabled={nextButtonDisabled}>
                 <ArrowForwardIcon />
             </button>
         </div>

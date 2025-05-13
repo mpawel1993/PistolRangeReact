@@ -9,6 +9,7 @@ import LearningPage from "./components/learning-page";
 import ActivityPage from "./components/activity-page";
 import ExamPage from "./components/exam-page";
 import EndOfModuleModal from "./components/end-of-module-modal";
+import ExamSummary from "./components/exam-summary";
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
                     <Route path="/activity-page" element={<ActivityPage/>} />
                     <Route path="/exam-page" element={<ExamPage/>} />
                     <Route path="/end-of-module" element={<EndOfModuleModal/>} />
+                    <Route path="/exam-summary" element={<ExamSummary goodCount={0}/>} />
                 </Routes>
             </Router>
         </div>

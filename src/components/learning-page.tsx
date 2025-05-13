@@ -208,9 +208,9 @@ export const LearningPage = () => {
         }
     }
 
-    // @ts-ignore
     return (<div>
-        <div style={{color: 'red'}}>
+        <div style={{color: '#98c135'}}>{category} : {actualQuestion.id}</div>
+        <div style={{color: '#98c135'}}>
             {actualQuestion.value}{actualQuestion.paragraph}
         </div>
 

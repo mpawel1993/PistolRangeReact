@@ -9,3 +9,11 @@ services:
       - /app/node_modules
     stdin_open: true
     tty: true
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=eyJhIjoiZTRmYThlOGM0MGVlZmVmNmNlYTUwYTU3ZDY2MjhkMDMiLCJ0IjoiNWE1OTEyMjAtZjAyNy00NzhlLWIwZTQtYjBhMDYyOGI3ZjRhIiwicyI6Ik56VmpOemhqT1RRdFl6ZzNOUzAwTm1VMUxUZzBOVFV0TmpVd01EQmxPVEl3T0RCayJ9

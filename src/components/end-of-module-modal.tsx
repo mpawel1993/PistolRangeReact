@@ -9,8 +9,8 @@ export const EndOfModuleModal = () => {
         navigate('/activity-page');
     }
 
-    return (<div style={{color: 'red' , height:20}}>
-        Brawo ukonczyles modul
+    return (<div style={{color: '#98c135' , height:20}}>
+        BRAWO UKONCZYLES MODUL
         <button  style={navButtonStyle} onClick={() => handleQuit()} >
             <HomeIcon />
         </button>
