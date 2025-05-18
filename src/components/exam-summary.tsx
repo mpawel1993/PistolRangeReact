@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 
 export const ExamSummary = ({goodCount} : {goodCount : number}) =>{
 
-
     return (<div style={{color:'#98c135'}}>
         UKOŃCZONO EGZAMIN
 

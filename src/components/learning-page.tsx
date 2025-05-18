@@ -5,6 +5,7 @@ import AnswerField from "./answerField";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HomeIcon from '@mui/icons-material/Home';
+import animalHeader from "../assets/animal_header.png"
 
 export const LearningPage = () => {
     const location = useLocation();
@@ -209,7 +210,16 @@ export const LearningPage = () => {
     }
 
     return (<div>
-        <div style={{color: '#98c135'}}>{category} : {actualQuestion.id}</div>
+        <br/>
+        <div className="container">
+            <div className="top-line">
+                <p style={{color:'red'}}>{category}</p>
+            </div>
+            <div className="bottom-line">
+                <p style={{color:'red'}}>{actualQuestion.id}/{questions.length}</p>
+            </div>
+        </div>
+
         <div style={{color: '#98c135'}}>
             {actualQuestion.value}{actualQuestion.paragraph}
         </div>

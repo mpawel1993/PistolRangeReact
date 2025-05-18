@@ -5,8 +5,16 @@ export const WelcomePage = () => {
 
     const navigate = useNavigate();
 
-    return (<div className="container" onClick={() => navigate('/activity-page')}>
-        <img src={logo} alt="Logo"/>
+    return (<div  style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh"
+    }} onClick={() => navigate('/activity-page')}>
+        <img style={{
+            width:'90%',
+            height: 'auto'
+        }} src={logo} alt="Logo"/>
     </div>);
 }
 
