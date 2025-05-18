@@ -5,7 +5,8 @@ import AnswerField from "./answerField";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HomeIcon from '@mui/icons-material/Home';
-import animalHeader from "../assets/animal_header.png"
+import banger from "../assets/badger.png"
+import learningImage from "../assets/learning_image.png";
 
 export const LearningPage = () => {
     const location = useLocation();
@@ -76,7 +77,7 @@ export const LearningPage = () => {
     }, [actualQuestion]);
 
     useEffect(() => {
-        if(isSummaryVisible){
+        if (isSummaryVisible) {
             navigate('/end-of-module')
         }
     }, [isSummaryVisible]);
@@ -210,13 +211,24 @@ export const LearningPage = () => {
     }
 
     return (<div>
-        <br/>
-        <div className="container">
-            <div className="top-line">
-                <p style={{color:'red'}}>{category}</p>
+        <div style={{display: "flex", background: "linear-gradient(to right, #94c02b, #71912a)"}}>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+            }}>
+                <div>
+                    <img style={{
+                        width: '70%',
+                        height: 'auto'
+                    }} src={banger} alt="Logo"/>
+                </div>
+
+                <div style={{color:'black' , alignItems: 'center', justifyContent: 'center', display: 'flex', width: '70%'}}>
+                    {actualQuestion.id}/{questions.length}
+                </div>
             </div>
-            <div className="bottom-line">
-                <p style={{color:'red'}}>{actualQuestion.id}/{questions.length}</p>
+            <div style={{color:'black', width: '90%'}}>
+                <p>{category}</p>
             </div>
         </div>
 
@@ -250,20 +262,21 @@ export const LearningPage = () => {
 
         <div style={{display: 'flex', justifyContent: 'center'}}>
             <button style={navButtonStyle}
-                onClick={() => handlePreviousQuestion()} disabled={previousDisabled}>
-                <ArrowBackIcon />
+                    onClick={() => handlePreviousQuestion()} disabled={previousDisabled}>
+                <ArrowBackIcon/>
             </button>
-            <button  style={navButtonStyle} onClick={() => handleQuit()}>
-                <HomeIcon />
+            <button style={navButtonStyle} onClick={() => handleQuit()}>
+                <HomeIcon/>
             </button>
             <button style={navButtonStyle} onClick={() => handleNextQuestion()} disabled={nextButtonDisabled}>
-                <ArrowForwardIcon />
+                <ArrowForwardIcon/>
             </button>
         </div>
     </div>);
 }
 
 const navButtonStyle = {
+    color:'black',
     padding: 15,
     margin: 10,
     fontFamily: 'Bahnschrift',

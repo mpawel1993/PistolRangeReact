@@ -3,6 +3,7 @@ import Field from "./field";
 import {useNavigate} from "react-router-dom";
 import {useAtomValue} from "jotai";
 import HomeIcon from "@mui/icons-material/Home";
+import learningImage from '../assets/learning_image.png';
 
 const SetOfQuestionsPage = () => {
 
@@ -85,10 +86,16 @@ const SetOfQuestionsPage = () => {
     }
 
     return (<div>
-        <div style={{color: 'black' , height:20}}></div>
-
-        <div onClick={() => handleNavigateToAll(categories[0])}>
-            <Field text={categories[0]}/>
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: '10px'
+        }}>
+            <img style={{
+                width: '50%',
+                height: 'auto'
+            }} src={learningImage} alt="Logo"/>
         </div>
         <div onClick={() => handleNavigateToActOfGunAndAmmo(categories[1])}>
             <Field text={categories[1]}/>
@@ -108,24 +115,29 @@ const SetOfQuestionsPage = () => {
         <div onClick={() => handleNavigationToSelfDefence(categories[6])}>
             <Field text={categories[6]}/>
         </div>
-        <button style={navButtonStyle} onClick={() =>             navigate('/activity-page')}>
-             <HomeIcon/>
-         </button>
+
+        <div style={{ display: "flex", gap: "10px" }}>
+            <button style={navButtonStyle} onClick={() =>             navigate('/activity-page')}>
+                <HomeIcon/>
+            </button>
+
+            <div style={{
+                flex: 1,
+            }} onClick={() => handleNavigateToAll(categories[0])}>
+                <Field text={categories[0]}/>
+            </div>
+        </div>
+
     </div>);
 }
 
 const navButtonStyle = {
-    padding: 15,
-    margin: 10,
-    fontFamily: 'Bahnschrift',
-    fontSize: 20,
+    flex: 0.5,
+    marginBottom: 10,
     background: "linear-gradient(to right, #94c02b, #71912a)",
     border: 'none',
-    borderRadius: 10,
     cursor: 'pointer',
     outline: 'none',
-    width: '100%',
-    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)'
 }
 
 export default SetOfQuestionsPage;

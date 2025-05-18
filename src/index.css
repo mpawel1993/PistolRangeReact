@@ -5,5 +5,9 @@
 
 body {
   font-family: 'Bahnschrift', sans-serif;
-  background-color: red;
+  background-color: black;
+}
+
+button:disabled {
+  color: black;
 }

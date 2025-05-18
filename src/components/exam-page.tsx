@@ -7,6 +7,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import RuleIcon from '@mui/icons-material/Rule';
 import ExamSummary from "./exam-summary";
 import HomeIcon from "@mui/icons-material/Home";
+import banger from "../assets/badger.png";
 
 export const ExamPage = () => {
     const location = useLocation();
@@ -187,9 +188,28 @@ export const ExamPage = () => {
 
     return (<div>
         <br/>
-        {isExamSummarised ? <ExamSummary goodCount={goodAnswers} /> : <div/>}
+        <div style={{display: "flex", background: "linear-gradient(to right, #94c02b, #71912a)"}}>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+            }}>
+                <div>
+                    <img style={{
+                        width: '50%',
+                        height: 'auto'
+                    }} src={banger} alt="Logo"/>
+                </div>
 
-        <div style={{color: '#98c135'}}>{!isExamSummarised ? formattedTime : '--:--'}</div>
+                <div style={{color:'black' , alignItems: 'center', justifyContent: 'center', display: 'flex', width: '50%'}}>
+                    {actualQuestion.id}/{questions.length}
+                </div>
+            </div>
+            <div style={{color:'black', width: '100%'}}>
+                <p>EGZAMIN : {!isExamSummarised ? formattedTime : '--:--'}</p>
+            </div>
+        </div>
+
+        <div style={{color: '#98c135'}}></div>
 
         <div style={{color: '#98c135'}}>
             <br/>
