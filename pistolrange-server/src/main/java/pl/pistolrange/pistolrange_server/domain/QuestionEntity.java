@@ -1,36 +1,44 @@
 package pl.pistolrange.pistolrange_server.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-@Table(name = "question")
+@Table(name = "questions")
 public class QuestionEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String databaseId;
 
-    @Column(nullable = false)
-    private String value;
+    @Column(name = "legacy_id")
+    private String legacyId;
 
-    @Column(name = "good_answer")
+    @Column(name = "question_value", nullable = false, length = 4000)
+    private String questionValue;
+
+    @Column(name = "good_answer", nullable = false)
     private String goodAnswer;
 
-    @Column(nullable = false)
+    @Column(name = "paragraph")
+    private String paragraph;
+
+    @Column(name = "category")
+    @Enumerated(EnumType.STRING)
+    private WeaponLawCategory category;
+
+    @Column(name = "a_answer", nullable = false, length = 4000)
     private String a_answer;
 
-    @Column(nullable = false)
+    @Column(name = "b_answer", nullable = false, length = 4000)
     private String b_answer;
 
-    @Column(nullable = false)
+    @Column(name = "c_answer", nullable = false, length = 4000)
     private String c_answer;
 }
