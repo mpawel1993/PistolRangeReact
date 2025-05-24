@@ -1,6 +1,6 @@
 import {SetStateAction, useEffect, useState} from "react";
 import {PossibleAnswer, Question, StorageObject} from "../model/model";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import AnswerField from "./answerField";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -9,7 +9,7 @@ import banger from "../assets/badger.png"
 import learningImage from "../assets/learning_image.png";
 
 export const LearnPage = () => {
-    const location = useLocation();
+    const { param } = useParams();
     const navigate = useNavigate();
 
     let [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
@@ -33,9 +33,9 @@ export const LearnPage = () => {
     const [data, setData] = useState([] as Question[]);
 
     useEffect(() => {
-        fetch("http://localhost:8080/learn/category")
+        fetch(`/learn/category/${param}`)
             .then((response) => response.json())
-            .then((result) => setData(result))
+            .then((result) => setQuestions(result))
             .catch((error) => console.error("Error fetching data:", error));
     }, []);
 

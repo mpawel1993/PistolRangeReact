@@ -1,10 +1,7 @@
 package pl.pistolrange.pistolrange_server.api;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.pistolrange.pistolrange_server.api.dto.QuestionDto;
 import pl.pistolrange.pistolrange_server.domain.WeaponLawCategory;
 import pl.pistolrange.pistolrange_server.service.LearnService;
@@ -19,8 +16,9 @@ public class LearnController {
 
     private final LearnService learnService;
 
-    @GetMapping("/category")
-    public List<QuestionDto> getQuestionsByCategory(){
-        return learnService.getQuestionByCategory(WeaponLawCategory.WSZYSTKIE);
+    @GetMapping("/category/{category}")
+    public List<QuestionDto> getQuestionsByCategory(@PathVariable String category){
+        var cat = WeaponLawCategory.valueOf(category.toUpperCase());
+        return learnService.getQuestionByCategory(cat);
     }
 }

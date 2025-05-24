@@ -29,7 +29,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<WelcomePage/>} />
                     <Route path="/set-of-questions" element={<SetOfQuestionsPage />} />
-                    <Route path="/learn-page" element={<LearnPage/>} />
+                    <Route path="/nauka/:param" element={<LearnPage/>} />
                     <Route path="/activity-page" element={<ActivityPage/>} />
                     <Route path="/exam-page" element={<ExamPage/>} />
                     <Route path="/end-of-module" element={<EndOfModuleModal/>} />

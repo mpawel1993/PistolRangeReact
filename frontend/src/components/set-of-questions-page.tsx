@@ -4,18 +4,12 @@ import {useNavigate} from "react-router-dom";
 import {useAtomValue} from "jotai";
 import HomeIcon from "@mui/icons-material/Home";
 import learningImage from '../assets/learning_image.png';
+import {WeaponLawCategory} from "../model/model";
 
 const SetOfQuestionsPage = () => {
 
     const navigate = useNavigate();
     const baseQuestions = useAtomValue(allQuestionsAtom);
-
-    const handleNavigateToAll = (categoryName: string) => {
-        let storageKey = 'all';
-        navigate('/learn-page', {
-            state: {questions: baseQuestions, categoryName, storageKey}
-        });
-    }
 
     const handleNavigateToActOfGunAndAmmo = (categoryName: string) => {
         let storageKey = 'ActOfGunAndAmmo';
@@ -24,7 +18,7 @@ const SetOfQuestionsPage = () => {
         let set3 = baseQuestions.filter(x => x.displayId >= 164 && x.displayId <= 169);
         let actual = [...set1, ...set2, ...set3];
         assignId(actual);
-        navigate('/learn-page', {
+        navigate('/nauka', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -33,7 +27,7 @@ const SetOfQuestionsPage = () => {
         let storageKey = 'CarryGun';
         let actual = baseQuestions.filter(x => x.displayId >= 146 && x.displayId <= 153);
         assignId(actual);
-        navigate('/learn-page', {
+        navigate('/nauka', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -42,7 +36,7 @@ const SetOfQuestionsPage = () => {
         let storageKey = 'PublicTransport';
         let actual = baseQuestions.filter(x => x.displayId >= 159 && x.displayId <= 163);
         assignId(actual);
-        navigate('/learn-page', {
+        navigate('/nauka', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -51,7 +45,7 @@ const SetOfQuestionsPage = () => {
         let storageKey = 'SafetyOnShootingRange';
         let actual = baseQuestions.filter(x => x.displayId >= 170 && x.displayId <= 184);
         assignId(actual);
-        navigate('/learn-page', {
+        navigate('/nauka', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -63,7 +57,7 @@ const SetOfQuestionsPage = () => {
         let actual = [];
         actual = [...set1, ...set2];
         assignId(actual);
-        navigate('/learn-page', {
+        navigate('/nauka', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -72,7 +66,7 @@ const SetOfQuestionsPage = () => {
         let storageKey = 'SelfDefence';
         let actual = baseQuestions.filter(x => x.displayId >= 194 && x.displayId <= 196);
         assignId(actual)
-        navigate('/learn-page', {
+        navigate('/nauka', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -116,14 +110,14 @@ const SetOfQuestionsPage = () => {
             <Field text={categories[6]}/>
         </div>
 
-        <div style={{ display: "flex", gap: "10px" }}>
-            <button style={navButtonStyle} onClick={() =>             navigate('/activity-page')}>
+        <div style={{display: "flex", gap: "10px"}}>
+            <button style={navButtonStyle} onClick={() => navigate('/activity-page')}>
                 <HomeIcon/>
             </button>
 
             <div style={{
                 flex: 1,
-            }} onClick={() => handleNavigateToAll(categories[0])}>
+            }} onClick={() => navigate('/nauka/' + WeaponLawCategory.WSZYSTKIE.toLowerCase())}>
                 <Field text={categories[0]}/>
             </div>
         </div>
