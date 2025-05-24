@@ -8,7 +8,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import banger from "../assets/badger.png"
 import learningImage from "../assets/learning_image.png";
 
-export const LearningPage = () => {
+export const LearnPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -290,4 +290,4 @@ const navButtonStyle = {
     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)'
 }
 
-export default LearningPage;
+export default LearnPage;

@@ -12,7 +12,7 @@ const SetOfQuestionsPage = () => {
 
     const handleNavigateToAll = (categoryName: string) => {
         let storageKey = 'all';
-        navigate('/learining-page', {
+        navigate('/learn-page', {
             state: {questions: baseQuestions, categoryName, storageKey}
         });
     }
@@ -24,7 +24,7 @@ const SetOfQuestionsPage = () => {
         let set3 = baseQuestions.filter(x => x.displayId >= 164 && x.displayId <= 169);
         let actual = [...set1, ...set2, ...set3];
         assignId(actual);
-        navigate('/learining-page', {
+        navigate('/learn-page', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -33,7 +33,7 @@ const SetOfQuestionsPage = () => {
         let storageKey = 'CarryGun';
         let actual = baseQuestions.filter(x => x.displayId >= 146 && x.displayId <= 153);
         assignId(actual);
-        navigate('/learining-page', {
+        navigate('/learn-page', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -42,7 +42,7 @@ const SetOfQuestionsPage = () => {
         let storageKey = 'PublicTransport';
         let actual = baseQuestions.filter(x => x.displayId >= 159 && x.displayId <= 163);
         assignId(actual);
-        navigate('/learining-page', {
+        navigate('/learn-page', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -51,7 +51,7 @@ const SetOfQuestionsPage = () => {
         let storageKey = 'SafetyOnShootingRange';
         let actual = baseQuestions.filter(x => x.displayId >= 170 && x.displayId <= 184);
         assignId(actual);
-        navigate('/learining-page', {
+        navigate('/learn-page', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -63,7 +63,7 @@ const SetOfQuestionsPage = () => {
         let actual = [];
         actual = [...set1, ...set2];
         assignId(actual);
-        navigate('/learining-page', {
+        navigate('/learn-page', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
@@ -72,7 +72,7 @@ const SetOfQuestionsPage = () => {
         let storageKey = 'SelfDefence';
         let actual = baseQuestions.filter(x => x.displayId >= 194 && x.displayId <= 196);
         assignId(actual)
-        navigate('/learining-page', {
+        navigate('/learn-page', {
             state: {questions: actual, categoryName: categoryName, storageKey: storageKey}
         });
     }
