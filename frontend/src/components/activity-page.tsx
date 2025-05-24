@@ -7,45 +7,6 @@ import welcomeMessage from "../assets/welcome_message.png";
 
 export const ActivityPage = () => {
     const navigate = useNavigate();
-
-    const baseQuestions = useAtomValue(allQuestionsAtom);
-
-    const navigateToExam = () => {
-        let numbers = [];
-        let min, max, r, n, p;
-        min = 1;
-        max = 200;
-        r = 10;
-
-        for (let i = 0; i < r; i++) {
-            do {
-                n = Math.floor(Math.random() * (max - min + 1)) + min;
-                p = numbers.includes(n);
-                if (!p) {
-                    numbers.push(n);
-                }
-            }
-            while (p);
-        }
-
-        let finalQuestions: Question[] = [];
-        numbers.forEach(a => {
-            let question = baseQuestions.filter(q => q.id == a)[0];
-            finalQuestions.push(question);
-        });
-
-        assignId(finalQuestions);
-        navigate('/exam-page', {state: {questions: finalQuestions}})
-    }
-
-    const assignId = (array: any[]) => {
-        let index = 1;
-        array.forEach(a => {
-            a.id = index;
-            index++;
-        });
-    }
-
     return (<div>
         <br/>
         <br/>
@@ -63,7 +24,7 @@ export const ActivityPage = () => {
         <div onClick={() => navigate('/set-of-questions')}>
             <Field text='NAUKA'/>
         </div>
-        <div onClick={() => navigateToExam()}>
+        <div onClick={() => navigate('/exam-page', {state: {questions: []}})}>
             <Field text='EGZAMIN'/>
         </div>
     </div>);

@@ -11,14 +11,14 @@ import learningImage from "../assets/learning_image.png";
 export const LearningPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [params, setParams] = useState(location.state);
 
     let [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
     const [category, setCategory] = useState('');
     const [isSummaryVisible, setIsSummaryVisible] = useState(false);
-    const [questions, setQuestions] = useState([] as Question[]); //Filtered questions list
-    const [actualQuestion, setActualQuestion] = useState({//Actual Loaded Questions
-        id: 1,
+    const [questions, setQuestions] = useState([] as Question[]);
+    const [actualQuestion, setActualQuestion] = useState({
+        displayId: 1,
+        isButtonsDisabled: true,
         value: '', possibleAnswer:
             [{id: 'a', value: '', gradient: ['white', 'white']} as PossibleAnswer,
                 {id: 'b', value: '', gradient: ['white', 'white']} as PossibleAnswer,
@@ -30,16 +30,18 @@ export const LearningPage = () => {
     const [isStorageItemsExist, setIsStorageItemsExist] = useState(false);
     const [userResponse, setUserResponse] = useState('yes');
 
-    //After Component Mount
+    const [data, setData] = useState([] as Question[]);
+
     useEffect(() => {
-        let que = params.questions.map((x: any) => Object.assign({}, x));
-        que.map((a: any) => {
-            a.possibleAnswer.map((b: any) => b.gradient = ['#94c02b', '#71912a']);
-        });
-        setQuestions(que);
-        setCategory(params.categoryName);
-        setStorageKey(params.storageKey);
-    }, [params]);
+        fetch("http://localhost:8080/learn/category")
+            .then((response) => response.json())
+            .then((result) => setData(result))
+            .catch((error) => console.error("Error fetching data:", error));
+    }, []);
+
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
 
     useEffect(() => {
         if (questions.length !== 0 && !isQuestionsLoaded) {
@@ -47,7 +49,7 @@ export const LearningPage = () => {
             que.map(a => {
                 a.possibleAnswer.map(b => b.gradient = ['#94c02b', '#71912a']);
             });
-            const question = questions.filter(x => x.id == 1)[0];
+            const question = questions.filter(x => x.displayId == 1)[0];
             setActualQuestion(question);
             setIsQuestionLoaded(true);
         } else {
@@ -60,16 +62,16 @@ export const LearningPage = () => {
     }, [questions]);
 
     useEffect(() => {
-        if (actualQuestion.id == 1) {
+        if (actualQuestion.displayId == 1) {
             setNextButtonDisabled(false);
             setPreviousButtonDisabled(true);
-        } else if (actualQuestion.id <= 1) {
-            setActualQuestion(questions.filter(x => x.id == 1)[0])
+        } else if (actualQuestion.displayId <= 1) {
+            setActualQuestion(questions.filter(x => x.displayId == 1)[0])
             setNextButtonDisabled(false);
             setPreviousButtonDisabled(true);
-        } else if (actualQuestion.id >= questions.length) {
+        } else if (actualQuestion.displayId >= questions.length) {
             setPreviousButtonDisabled(false);
-            setActualQuestion(questions.filter(x => x.id == questions.length)[0])
+            setActualQuestion(questions.filter(x => x.displayId == questions.length)[0])
         } else {
             setNextButtonDisabled(false);
             setPreviousButtonDisabled(false);
@@ -87,41 +89,39 @@ export const LearningPage = () => {
     }
 
     const handlePickUp = (option: string) => {
-        let question = actualQuestion;
-        // @ts-ignore
-        question.actualAnswer = undefined;
-        question.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
-        // @ts-ignore
-        setActualQuestion({...actualQuestion, question});
-        question.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
-        question.actualAnswer = option;
-        // @ts-ignore
-        setActualQuestion({...actualQuestion, question});
-        questions[actualQuestion.id - 1].actualAnswer = option;
-        setQuestions(questions);
+        if (!actualQuestion.isButtonsDisabled) {
+            let question = actualQuestion;
+            question.actualAnswer = undefined;
+            question.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
+            setActualQuestion({...question});
+            question.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
+            question.actualAnswer = option;
+            setActualQuestion({...question});
+            questions[actualQuestion.displayId - 1].actualAnswer = option;
+            setQuestions(questions);
+        }
     }
 
     const handleNextQuestion = () => {
         let question = actualQuestion;
 
         if (actualQuestion.actualAnswer !== undefined) {
-            let nextId = JSON.parse(JSON.stringify(question.id));
+            let nextId = JSON.parse(JSON.stringify(question.displayId));
             nextId++;
-            let next = questions.filter(x => x.id == nextId)[0]
+            let next = questions.filter(x => x.displayId == nextId)[0]
             if (next === undefined) {
                 if (question.actualAnswer === question.goodAnswer) {
                     question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#085908', '#28a628'];
                     setIsSummaryVisible(true);
-                    questions[question.id - 1].isButtonsDisabled = true
+                    questions[question.displayId - 1].isButtonsDisabled = true
                     setQuestions(questions);
                 } else {
                     question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#500000', '#740000'];
-                    // @ts-ignore
-                    setActualQuestion({...actualQuestion, question});
+                    setActualQuestion(question);
                 }
             } else {
                 if (!question.isButtonsDisabled) {
-                    const id = question.id;
+                    const id = question.displayId;
                     if (id === questions.length) {
                         setNextButtonDisabled(true);
                     } else {
@@ -145,10 +145,10 @@ export const LearningPage = () => {
     }
 
     const handlePreviousQuestion = () => {
-        const id = actualQuestion.id;
+        const id = actualQuestion.displayId;
         let prevId = JSON.parse(JSON.stringify(id));
         prevId--;
-        let previous = questions.filter(x => x.id == prevId)[0]
+        let previous = questions.filter(x => x.displayId == prevId)[0]
         if (id === questions.length) {
             setNextButtonDisabled(true);
         } else {
@@ -224,7 +224,7 @@ export const LearningPage = () => {
                 </div>
 
                 <div style={{color:'black' , alignItems: 'center', justifyContent: 'center', display: 'flex', width: '70%'}}>
-                    {actualQuestion.id}/{questions.length}
+                    {actualQuestion.displayId}/{questions.length}
                 </div>
             </div>
             <div style={{color:'black', width: '90%'}}>

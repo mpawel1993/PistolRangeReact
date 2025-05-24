@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class QuestionDto {
     private String id;
-    private String displayId;
+    private Integer displayId;
     private String value;
     private String goodAnswer;
     private String paragraph;

@@ -6,10 +6,11 @@ import pl.pistolrange.pistolrange_server.api.dto.QuestionDto;
 import pl.pistolrange.pistolrange_server.domain.QuestionEntity;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 @Component
 public class QuestionMapper {
+
+    private final ThreadLocal<Integer> threadLocalInt = ThreadLocal.withInitial(() -> 1);
 
     public QuestionEntity mapToDomain (QuestionDto questionDto){
         var a_answer = questionDto.getPossibleAnswer()
@@ -39,7 +40,7 @@ public class QuestionMapper {
     }
 
     public QuestionDto mapToDto (QuestionEntity questionEntity){
-        System.out.println(questionEntity);
+
         var answers = Arrays.asList(PossibleAnswerDto.builder()
                         .id("a")
                         .value(questionEntity.getA_answer())
@@ -53,14 +54,17 @@ public class QuestionMapper {
                         .value(questionEntity.getC_answer())
                         .build());
 
-
-        return QuestionDto.builder()
+        var question=  QuestionDto.builder()
                 .id(String.valueOf(questionEntity.getDatabaseId()))
+                .displayId(threadLocalInt.get())
                 .value(questionEntity.getQuestionValue())
                 .paragraph(questionEntity.getParagraph())
                 .goodAnswer(questionEntity.getGoodAnswer())
                 .possibleAnswer(answers)
                 .build();
+        threadLocalInt.set(threadLocalInt.get() + 1);
+
+        return question;
     }
 
 }
