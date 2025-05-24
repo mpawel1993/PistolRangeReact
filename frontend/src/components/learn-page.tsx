@@ -7,30 +7,21 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HomeIcon from '@mui/icons-material/Home';
 import banger from "../assets/badger.png"
 import learningImage from "../assets/learning_image.png";
+import {initQuestion} from "../model/init-data";
 
 export const LearnPage = () => {
     const { param } = useParams();
     const navigate = useNavigate();
 
     let [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
-    const [category, setCategory] = useState('');
     const [isSummaryVisible, setIsSummaryVisible] = useState(false);
     const [questions, setQuestions] = useState([] as Question[]);
-    const [actualQuestion, setActualQuestion] = useState({
-        displayId: 1,
-        isButtonsDisabled: true,
-        value: '', possibleAnswer:
-            [{id: 'a', value: '', gradient: ['white', 'white']} as PossibleAnswer,
-                {id: 'b', value: '', gradient: ['white', 'white']} as PossibleAnswer,
-                {id: 'c', value: '', gradient: ['white', 'white']} as PossibleAnswer]
-    } as Question);
+    const [actualQuestion, setActualQuestion] = useState(initQuestion);
     const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
     const [previousDisabled, setPreviousButtonDisabled] = useState(false);
     const [storageKey, setStorageKey] = useState('');
     const [isStorageItemsExist, setIsStorageItemsExist] = useState(false);
     const [userResponse, setUserResponse] = useState('yes');
-
-    const [data, setData] = useState([] as Question[]);
 
     useEffect(() => {
         fetch(`/learn/category/${param}`)
@@ -38,10 +29,6 @@ export const LearnPage = () => {
             .then((result) => setQuestions(result))
             .catch((error) => console.error("Error fetching data:", error));
     }, []);
-
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
 
     useEffect(() => {
         if (questions.length !== 0 && !isQuestionsLoaded) {
@@ -228,7 +215,7 @@ export const LearnPage = () => {
                 </div>
             </div>
             <div style={{color:'black', width: '90%'}}>
-                <p>{category}</p>
+                <p>{param}</p>
             </div>
         </div>
 

@@ -1,7 +1,4 @@
-import {allQuestionsAtom, categories} from "../atoms";
 import Field from "./field";
-import {Question} from "../model/model";
-import {useAtomValue} from "jotai/index";
 import {useNavigate} from "react-router-dom";
 import welcomeMessage from "../assets/welcome_message.png";
 

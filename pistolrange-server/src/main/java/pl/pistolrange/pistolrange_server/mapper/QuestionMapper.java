@@ -10,8 +10,6 @@ import java.util.Arrays;
 @Component
 public class QuestionMapper {
 
-    private final ThreadLocal<Integer> threadLocalInt = ThreadLocal.withInitial(() -> 1);
-
     public QuestionEntity mapToDomain (QuestionDto questionDto){
         var a_answer = questionDto.getPossibleAnswer()
                 .stream()
@@ -56,13 +54,11 @@ public class QuestionMapper {
 
         var question=  QuestionDto.builder()
                 .id(String.valueOf(questionEntity.getDatabaseId()))
-                .displayId(threadLocalInt.get())
                 .value(questionEntity.getQuestionValue())
                 .paragraph(questionEntity.getParagraph())
                 .goodAnswer(questionEntity.getGoodAnswer())
                 .possibleAnswer(answers)
                 .build();
-        threadLocalInt.set(threadLocalInt.get() + 1);
 
         return question;
     }
