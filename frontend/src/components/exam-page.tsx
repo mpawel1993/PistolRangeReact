@@ -9,6 +9,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import banger from "../assets/badger.png";
 import {initQuestion} from "../model/init-data";
 import ExamSummary from "./exam-summary";
+import {goodAnswersCounter, isExamSummaryVisible} from "../atoms/app-atoms";
+import {useSetAtom} from "jotai";
 
 export const ExamPage = () => {
     const location = useLocation();
@@ -21,11 +23,11 @@ export const ExamPage = () => {
     const [actualQuestion, setActualQuestion] = useState(initQuestion);
     const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
     const [previousDisabled, setPreviousButtonDisabled] = useState(false);
-    const [isSummaryVisible, setIsSummaryVisible] = useState(false);
     const [wasSummaryDisplayed, setWasSummaryDisplayed] = useState(false);
-    const [goodAnswers, setGoodAnswers] = useState(0);
     const [isExamSummarised, setIsExamSummarised] = useState(false);
     const [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
+    const setIsSummaryOpen = useSetAtom(isExamSummaryVisible);
+    const setGoodAnswers = useSetAtom(goodAnswersCounter);
 
     useEffect(() => {
         fetch('/exam/load')
@@ -91,7 +93,7 @@ export const ExamPage = () => {
 
     const handleQuit = () => {
         summaryExam();
-        setIsSummaryVisible(true);
+        setIsSummaryOpen(true);
         setWasSummaryDisplayed(true);
         if (wasSummaryDisplayed) {
             navigate('/activity-page')
@@ -173,6 +175,7 @@ export const ExamPage = () => {
         });
         setQuestions(questions);
         setIsExamSummarised(true);
+        setIsSummaryOpen(true);
     }
 
     return (<div>
@@ -251,7 +254,7 @@ export const ExamPage = () => {
             </button>
         </div>
 
-        <ExamSummary goodCount={0} />
+        <ExamSummary/>
     </div>)
 }
 

@@ -1,24 +1,34 @@
-import {Box, Modal, Typography} from "@mui/material";
-import React, {useEffect, useState} from "react";
+import {Box, Modal} from "@mui/material";
+import {useEffect} from "react";
+import {useAtom} from "jotai";
+import {goodAnswersCounter, isExamSummaryVisible} from "../atoms/app-atoms";
 
-export const ExamSummary = ({goodCount} : {goodCount : number}) =>{
-    const [open, setOpen] = useState(true);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+export const ExamSummary = () => {
+
+    const [isSummaryOpen, setIsSummaryOpen] = useAtom(isExamSummaryVisible);
+    const [goodAnswersCount, setGoodAnswersCount] = useAtom(goodAnswersCounter);
+
+    useEffect(() => {
+        return () => {
+            setIsSummaryOpen(false);
+            setGoodAnswersCount(0);
+        };
+    }, []);
+
 
     return (<Modal
-        open={open}
-        onClose={handleClose}
+        open={isSummaryOpen}
+        onClose={() => setIsSummaryOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
         <Box sx={style}>
-            <div style={{color:'#98c135'}}>
+            <div style={{color: '#98c135'}}>
                 UKOŃCZONO EGZAMIN
-
-                { goodCount == 8 ? <div style={{color : 'red'}}>ZALICZONO</div> : <div style={{color : 'red'}}>NIE ZALICZONO</div>}
-                <div style={{color : 'green'}}>DOBRZE: {goodCount} </div>
-                <div style={{color : 'red'}}> ŹLE: {10 - goodCount}</div>
+                {goodAnswersCount == 8 ? <div style={{color: 'red'}}>ZALICZONO</div> :
+                    <div style={{color: 'red'}}>NIE ZALICZONO</div>}
+                <div style={{color: 'green'}}>DOBRZE: {goodAnswersCount} </div>
+                <div style={{color: 'red'}}> ŹLE: {10 - goodAnswersCount}</div>
             </div>
         </Box>
     </Modal>)

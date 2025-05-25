@@ -1,17 +1,23 @@
 import {useNavigate} from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import {Box, Modal} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useAtom} from "jotai/index";
+import {isExamSummaryVisible, isModuleSummaryVisible} from "../atoms/app-atoms";
 
 export const EndOfModuleModal = () => {
 
-    const [open, setOpen] = useState(true);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [isSummaryOpen, setIsSummaryOpen] = useAtom(isModuleSummaryVisible);
+
+    useEffect(() => {
+        return () => {
+            setIsSummaryOpen(false);
+        };
+    }, []);
 
     return (<Modal
-        open={open}
-        onClose={handleClose}
+        open={isSummaryOpen}
+        onClose={() => setIsSummaryOpen(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >

@@ -1,6 +1,6 @@
 import './App.css';
 import WelcomePage from "./components/welcome-page";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import SetOfQuestionsPage from "./components/set-of-questions-page";
 import LearnPage from "./components/learn-page";
 import ActivityPage from "./components/activity-page";
@@ -17,13 +17,13 @@ function App() {
         }}>
             <Router>
                 <Routes>
-                    <Route path="/" element={<WelcomePage/>} />
-                    <Route path="/set-of-questions" element={<SetOfQuestionsPage />} />
-                    <Route path="/nauka/:param" element={<LearnPage/>} />
-                    <Route path="/activity-page" element={<ActivityPage/>} />
-                    <Route path="/exam-page" element={<ExamPage/>} />
-                    <Route path="/end-of-module" element={<EndOfModuleModal/>} />
-                    <Route path="/exam-summary" element={<ExamSummary goodCount={0}/>} />
+                    <Route path="/" element={<WelcomePage/>}/>
+                    <Route path="/set-of-questions" element={<SetOfQuestionsPage/>}/>
+                    <Route path="/nauka/:param" element={<LearnPage/>}/>
+                    <Route path="/activity-page" element={<ActivityPage/>}/>
+                    <Route path="/exam-page" element={<ExamPage/>}/>
+                    <Route path="/end-of-module" element={<EndOfModuleModal/>}/>
+                    <Route path="/exam-summary" element={<ExamSummary/>}/>
                 </Routes>
             </Router>
         </div>

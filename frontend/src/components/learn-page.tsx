@@ -8,13 +8,14 @@ import HomeIcon from '@mui/icons-material/Home';
 import banger from "../assets/badger.png"
 import learningImage from "../assets/learning_image.png";
 import {initQuestion} from "../model/init-data";
+import {useSetAtom} from "jotai";
+import {isModuleSummaryVisible} from "../atoms/app-atoms";
 
 export const LearnPage = () => {
     const { param } = useParams();
     const navigate = useNavigate();
 
     const [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
-    const [isSummaryVisible, setIsSummaryVisible] = useState(false);
     const [questions, setQuestions] = useState([] as Question[]);
     const [actualQuestion, setActualQuestion] = useState(initQuestion);
     const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
@@ -22,6 +23,8 @@ export const LearnPage = () => {
     const [storageKey, setStorageKey] = useState('');
     const [isStorageItemsExist, setIsStorageItemsExist] = useState(false);
     const [userResponse, setUserResponse] = useState('yes');
+
+    const setIsSummaryVisible = useSetAtom(isModuleSummaryVisible);
 
     useEffect(() => {
         fetch(`/learn/category/${param}`)
@@ -64,12 +67,6 @@ export const LearnPage = () => {
             setPreviousButtonDisabled(false);
         }
     }, [actualQuestion]);
-
-    useEffect(() => {
-        if (isSummaryVisible) {
-            navigate('/end-of-module')
-        }
-    }, [isSummaryVisible]);
 
     const handleQuit = () => {
         navigate('/activity-page');
