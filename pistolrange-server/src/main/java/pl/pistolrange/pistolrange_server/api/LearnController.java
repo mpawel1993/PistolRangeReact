@@ -17,7 +17,7 @@ public class LearnController {
     private final LearnService learnService;
 
     @GetMapping("/category/{category}")
-    public List<QuestionDto> getQuestionsByCategory(@PathVariable String category){
+    public List<QuestionDto> getQuestionsByCategory(@PathVariable("category") String category){
         var cat = WeaponLawCategory.valueOf(category.toUpperCase());
         return learnService.getQuestionByCategory(cat);
     }

@@ -10,7 +10,7 @@ import java.util.Arrays;
 @Component
 public class QuestionMapper {
 
-    public QuestionEntity mapToDomain (QuestionDto questionDto){
+    public QuestionEntity mapToDomain(QuestionDto questionDto) {
         var a_answer = questionDto.getPossibleAnswer()
                 .stream()
                 .filter(x -> x.getId().equals("a"))
@@ -27,17 +27,18 @@ public class QuestionMapper {
                 .toList().getFirst().getValue();
 
         return QuestionEntity.builder()
-                .legacyId(Integer.valueOf(questionDto.getId()))
+                .legacyId(questionDto.getLegacyId())
                 .questionValue(questionDto.getValue())
                 .goodAnswer(questionDto.getGoodAnswer())
                 .paragraph(questionDto.getParagraph())
+                .category(questionDto.getCategory())
                 .a_answer(a_answer)
                 .b_answer(b_answer)
                 .c_answer(c_answer)
                 .build();
     }
 
-    public QuestionDto mapToDto (QuestionEntity questionEntity){
+    public QuestionDto mapToDto(QuestionEntity questionEntity) {
 
         var answers = Arrays.asList(PossibleAnswerDto.builder()
                         .id("a")
@@ -52,15 +53,14 @@ public class QuestionMapper {
                         .value(questionEntity.getC_answer())
                         .build());
 
-        var question=  QuestionDto.builder()
-                .id(String.valueOf(questionEntity.getDatabaseId()))
+        return QuestionDto.builder()
+                .legacyId(questionEntity.getLegacyId())
                 .value(questionEntity.getQuestionValue())
                 .paragraph(questionEntity.getParagraph())
                 .goodAnswer(questionEntity.getGoodAnswer())
                 .possibleAnswer(answers)
+                .category(questionEntity.getCategory())
                 .build();
-
-        return question;
     }
 
 }
