@@ -22,7 +22,9 @@ export const EndOfModuleModal = () => {
         aria-describedby="modal-modal-description"
     >
         <Box sx={style}>
-            Brawo Ukonczyles modul
+            <div style={{color: '#98c135'}}>
+                UKOŃCZONO MODUL
+            </div>
         </Box>
     </Modal>)
 }

@@ -18,9 +18,16 @@ public class LearnService {
 
     public List<QuestionDto> getQuestionByCategory(WeaponLawCategory weaponLawCategory) {
         AtomicInteger counter = new AtomicInteger(1);
-        return questionsRepository.findAllByCategory(weaponLawCategory).stream()
-                .map(questionMapper::mapToDto)
-                .peek(item -> item.setDisplayId(counter.getAndIncrement()))
-                .toList();
+        if (weaponLawCategory.equals(WeaponLawCategory.WSZYSTKIE)) {
+            return questionsRepository.findAll().stream()
+                    .map(questionMapper::mapToDto)
+                    .peek(item -> item.setDisplayId(counter.getAndIncrement()))
+                    .toList();
+        } else {
+            return questionsRepository.findAllByCategory(weaponLawCategory).stream()
+                    .map(questionMapper::mapToDto)
+                    .peek(item -> item.setDisplayId(counter.getAndIncrement()))
+                    .toList();
+        }
     }
 }

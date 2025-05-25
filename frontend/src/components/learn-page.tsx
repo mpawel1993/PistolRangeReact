@@ -10,6 +10,7 @@ import learningImage from "../assets/learning_image.png";
 import {initQuestion} from "../model/init-data";
 import {useSetAtom} from "jotai";
 import {isModuleSummaryVisible} from "../atoms/app-atoms";
+import EndOfModuleModal from "./end-of-module-modal";
 
 export const LearnPage = () => {
     const { param } = useParams();
@@ -195,6 +196,7 @@ export const LearnPage = () => {
     }
 
     return (<div>
+        <EndOfModuleModal />
         <div style={{display: "flex", background: "linear-gradient(to right, #94c02b, #71912a)"}}>
             <div style={{
                 display: "flex",

@@ -18,7 +18,7 @@ public class QuestionEntity {
     private String databaseId;
 
     @Column(name = "legacy_id")
-    private String legacyId;
+    private Integer legacyId;
 
     @Column(name = "question_value", nullable = false, length = 4000)
     private String questionValue;

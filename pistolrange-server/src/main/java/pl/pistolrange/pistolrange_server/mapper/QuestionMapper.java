@@ -27,7 +27,7 @@ public class QuestionMapper {
                 .toList().getFirst().getValue();
 
         return QuestionEntity.builder()
-                .legacyId(questionDto.getId())
+                .legacyId(Integer.valueOf(questionDto.getId()))
                 .questionValue(questionDto.getValue())
                 .goodAnswer(questionDto.getGoodAnswer())
                 .paragraph(questionDto.getParagraph())
