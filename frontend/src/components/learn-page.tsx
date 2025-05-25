@@ -13,7 +13,7 @@ export const LearnPage = () => {
     const { param } = useParams();
     const navigate = useNavigate();
 
-    let [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
+    const [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
     const [isSummaryVisible, setIsSummaryVisible] = useState(false);
     const [questions, setQuestions] = useState([] as Question[]);
     const [actualQuestion, setActualQuestion] = useState(initQuestion);

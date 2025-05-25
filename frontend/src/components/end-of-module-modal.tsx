@@ -1,34 +1,40 @@
 import {useNavigate} from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
+import {Box, Modal} from "@mui/material";
+import {useState} from "react";
 
 export const EndOfModuleModal = () => {
 
-    const navigate = useNavigate();
+    const [open, setOpen] = useState(true);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    const handleQuit = () => {
-        navigate('/activity-page');
-    }
-
-    return (<div style={{color: '#98c135' , height:20}}>
-        BRAWO UKONCZYLES MODUL
-        <button  style={navButtonStyle} onClick={() => handleQuit()} >
-            <HomeIcon />
-        </button>
-    </div>)
+    return (<Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+    >
+        <Box sx={style}>
+            Brawo Ukonczyles modul
+        </Box>
+    </Modal>)
 }
 
-const navButtonStyle = {
-    padding: 15,
-    margin: 10,
-    fontFamily: 'Bahnschrift',
-    fontSize: 20,
-    background: "linear-gradient(to right, #94c02b, #71912a)",
-    border: 'none',
-    borderRadius: 10,
-    cursor: 'pointer',
-    outline: 'none',
+const style = {
+    position: 'fixed',
+    top: '10px',
+    left: '50%',
+    transform: 'translate(-50%)',
     width: '100%',
-    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)'
-}
+    maxWidth: '1000px',
+    bgcolor: 'white',
+    border: '2px solid #000',
+    p: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+};
 
 export default EndOfModuleModal;

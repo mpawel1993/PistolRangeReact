@@ -7,6 +7,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import RuleIcon from '@mui/icons-material/Rule';
 import HomeIcon from "@mui/icons-material/Home";
 import banger from "../assets/badger.png";
+import {initQuestion} from "../model/init-data";
+import ExamSummary from "./exam-summary";
 
 export const ExamPage = () => {
     const location = useLocation();
@@ -16,21 +18,21 @@ export const ExamPage = () => {
     const [time, setTime] = useState(1800 || 10);
     const [formattedTime, setFormattedTime] = useState('30min: 0 sec');
     const timerRef = useRef(time);
-    let isQuestionsLoaded = false;
-    const [actualQuestion, setActualQuestion] = useState({//Actual Loaded Questions
-        displayId: 1,
-        isButtonsDisabled: true,
-        value: '', possibleAnswer:
-            [{id: 'a', value: '', gradient: ['white', 'white']} as PossibleAnswer,
-                {id: 'b', value: '', gradient: ['white', 'white']} as PossibleAnswer,
-                {id: 'c', value: '', gradient: ['white', 'white']} as PossibleAnswer]
-    } as Question);
+    const [actualQuestion, setActualQuestion] = useState(initQuestion);
     const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
     const [previousDisabled, setPreviousButtonDisabled] = useState(false);
     const [isSummaryVisible, setIsSummaryVisible] = useState(false);
     const [wasSummaryDisplayed, setWasSummaryDisplayed] = useState(false);
     const [goodAnswers, setGoodAnswers] = useState(0);
     const [isExamSummarised, setIsExamSummarised] = useState(false);
+    const [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
+
+    useEffect(() => {
+        fetch('/exam/load')
+            .then((response) => response.json())
+            .then((result) => setQuestions(result))
+            .catch((error) => console.error("Error fetching data:", error));
+    }, []);
 
     useEffect(() => {
         if (questions.length !== 0 && !isQuestionsLoaded) {
@@ -40,7 +42,7 @@ export const ExamPage = () => {
             });
             const question = questions.filter(x => x.displayId == 1)[0];
             setActualQuestion(question);
-            isQuestionsLoaded = true;
+            setIsQuestionLoaded(true)
         }
     }, [questions]);
 
@@ -53,13 +55,13 @@ export const ExamPage = () => {
             setNextButtonDisabled(false);
             setPreviousButtonDisabled(true);
         } else if (actualQuestion.displayId >= questions.length) {
-            setActualQuestion(questions.filter(x => x.displayId == questions.length)[0]);
+            setPreviousButtonDisabled(false);
+            setActualQuestion(questions.filter(x => x.displayId == questions.length)[0])
         } else {
             setNextButtonDisabled(false);
             setPreviousButtonDisabled(false);
         }
     }, [actualQuestion]);
-
     useEffect(() => {
         const timerId = setInterval(() => {
             timerRef.current -= 1;
@@ -101,10 +103,10 @@ export const ExamPage = () => {
             let question = actualQuestion;
             question.actualAnswer = undefined;
             question.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
-            setActualQuestion(question);
+            setActualQuestion({...question});
             question.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
             question.actualAnswer = option;
-            setActualQuestion(question);
+            setActualQuestion({...question});
             questions[actualQuestion.displayId - 1].actualAnswer = option;
             setQuestions(questions);
         }
@@ -125,11 +127,11 @@ export const ExamPage = () => {
     }
 
     const handlePreviousQuestion = () => {
-        const question = JSON.parse(JSON.stringify(actualQuestion));
-        let prevId = JSON.parse(JSON.stringify(question.id));
+        const id = actualQuestion.displayId;
+        let prevId = JSON.parse(JSON.stringify(id));
         prevId--;
-        let previous = questions.filter(x => x.displayId == prevId)[0];
-        if (prevId === questions.length) {
+        let previous = questions.filter(x => x.displayId == prevId)[0]
+        if (id === questions.length) {
             setNextButtonDisabled(true);
         } else {
             setPreviousButtonDisabled(false);
@@ -249,6 +251,7 @@ export const ExamPage = () => {
             </button>
         </div>
 
+        <ExamSummary goodCount={0} />
     </div>)
 }
 

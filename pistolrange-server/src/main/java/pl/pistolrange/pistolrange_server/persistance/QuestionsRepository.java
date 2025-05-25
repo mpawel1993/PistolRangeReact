@@ -11,4 +11,6 @@ import java.util.List;
 public interface QuestionsRepository extends JpaRepository<QuestionEntity, Long> {
 
     List<QuestionEntity> findAllByCategory(WeaponLawCategory weaponLawCategory);
+
+
 }
