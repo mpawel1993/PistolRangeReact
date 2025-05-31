@@ -5,3 +5,5 @@ export const isExamSummaryVisibleAtom = atom(false);
 export const isModuleSummaryVisibleAtom = atom(false);
 export const goodAnswersCounterAtom = atom(0);
 export const examDetailsAtom = atom(initExamDetails);
+export const isFromBeginModalVisibleAtom = atom(false);
+export const fromBeginUserResponseAtom = atom(false);

@@ -1,4 +1,4 @@
-import {SetStateAction, useEffect, useState} from "react";
+import {SetStateAction, useCallback, useEffect, useState} from "react";
 import {PossibleAnswer, Question, StorageObject} from "../model/model";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import AnswerField from "./answerField";
@@ -6,11 +6,16 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HomeIcon from '@mui/icons-material/Home';
 import banger from "../assets/badger.png"
-import learningImage from "../assets/learning_image.png";
 import {initQuestion} from "../model/init-data";
-import {useSetAtom} from "jotai";
-import {isModuleSummaryVisibleAtom} from "../atoms/app-atoms";
+import {useAtomValue, useSetAtom} from "jotai";
+import {
+    fromBeginUserResponseAtom,
+    isFromBeginModalVisibleAtom,
+    isModuleSummaryVisibleAtom,
+} from "../atoms/app-atoms";
 import EndOfModuleModal from "./end-of-module-modal";
+import {replaceUnderscoreWithSpace} from "../utils";
+import FromBeginModal from "./from-begin-modal";
 
 export const LearnPage = () => {
     const { param } = useParams();
@@ -23,16 +28,28 @@ export const LearnPage = () => {
     const [previousDisabled, setPreviousButtonDisabled] = useState(false);
     const [storageKey, setStorageKey] = useState('');
     const [isStorageItemsExist, setIsStorageItemsExist] = useState(false);
-    const [userResponse, setUserResponse] = useState('yes');
-
     const setIsSummaryVisible = useSetAtom(isModuleSummaryVisibleAtom);
+    const setIsFromBeginModalVisible = useSetAtom(isFromBeginModalVisibleAtom);
+    const fromBeginUserResponse = useAtomValue(fromBeginUserResponseAtom);
 
     useEffect(() => {
-        fetch(`/learn/category/${param}`)
+        setStorageKey(param as string);
+        checkLocalStorageData();
+
+        const randomQuestionsStorage  = localStorage.getItem('pistol_range_random_questions');
+        const randomQuestions = randomQuestionsStorage ? randomQuestionsStorage : 'false';
+
+        fetch(`/learn/category/${param}/${randomQuestions}`)
             .then((response) => response.json())
             .then((result) => setQuestions(result))
             .catch((error) => console.error("Error fetching data:", error));
     }, []);
+
+    useEffect(() => {
+        if (isStorageItemsExist) {
+            setIsFromBeginModalVisible(true);
+        }
+    }, [isStorageItemsExist]);
 
     useEffect(() => {
         if (questions.length !== 0 && !isQuestionsLoaded) {
@@ -143,20 +160,17 @@ export const LearnPage = () => {
     }
 
     useEffect(() => {
-        if (userResponse === 'no') {
-            readAsyncData();
+        if (fromBeginUserResponse) {
+            console.log(fromBeginUserResponse);
+            readLocalStorageData();
         }
-    }, [userResponse]);
+    }, [fromBeginUserResponse]);
 
     useEffect(() => {
         if (storageKey != '') {
-            checkAsyncData();
+            checkLocalStorageData();
         }
     }, [storageKey]);
-
-    const sendData = (data: SetStateAction<string>) => {
-        setUserResponse(data)
-    }
 
     const storeData = () => {
         if (storageKey != '') {
@@ -172,7 +186,7 @@ export const LearnPage = () => {
         }
     };
 
-    const checkAsyncData = () => {
+    const checkLocalStorageData = () => {
         try {
             const item = localStorage.getItem(storageKey);
             if (item !== null) {
@@ -183,7 +197,7 @@ export const LearnPage = () => {
         }
     }
 
-    const readAsyncData = () => {
+    const readLocalStorageData = () => {
         try {
             const item = localStorage.getItem(storageKey);
             if (item !== null) {
@@ -197,6 +211,8 @@ export const LearnPage = () => {
 
     return (<div>
         <EndOfModuleModal />
+        <FromBeginModal />
+
         <div style={{display: "flex", background: "linear-gradient(to right, #94c02b, #71912a)"}}>
             <div style={{
                 display: "flex",
@@ -214,7 +230,7 @@ export const LearnPage = () => {
                 </div>
             </div>
             <div style={{color:'black', width: '90%'}}>
-                <p>{param}</p>
+                <p>{replaceUnderscoreWithSpace(param ? param : '').toUpperCase()}</p>
             </div>
         </div>
 

@@ -3,14 +3,11 @@ import {useNavigate} from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import learningImage from '../assets/learning_image.png';
 import {WeaponLawCategory} from "../model/model";
+import { replaceUnderscoreWithSpace } from "../utils";
 
 const SetOfQuestionsPage = () => {
 
     const navigate = useNavigate();
-
-    const replaceUnderscoreWithSpace = (str: string) => {
-        return str.replace(/_/g, " ");
-    }
 
     return (<div>
         <div style={{

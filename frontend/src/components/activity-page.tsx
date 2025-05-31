@@ -4,6 +4,7 @@ import welcomeMessage from "../assets/welcome_message.png";
 
 export const ActivityPage = () => {
     const navigate = useNavigate();
+
     return (<div>
         <br/>
         <br/>
@@ -18,8 +19,17 @@ export const ActivityPage = () => {
             }} src={welcomeMessage} alt="Logo"/>
         </div>
         <br/>
-        <div onClick={() => navigate('/set-of-questions')}>
+        <div onClick={() => {
+            localStorage.setItem('pistol_range_random_questions', 'false');
+            navigate('/set-of-questions');
+        }}>
             <Field text='NAUKA'/>
+        </div>
+        <div onClick={() => {
+            localStorage.setItem('pistol_range_random_questions', 'true');
+            navigate('/set-of-questions');
+        }}>
+            <Field text='NAUKA (LOSOWE PYTANIA)'/>
         </div>
         <div onClick={() => navigate('/exam-page', {state: {questions: []}})}>
             <Field text='EGZAMIN'/>
