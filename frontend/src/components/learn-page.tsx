@@ -210,7 +210,7 @@ export const LearnPage = () => {
         <EndOfModuleModal/>
         <FromBeginModal/>
 
-        <div style={{display: "flex", background: "linear-gradient(to right, #94c02b, #71912a)"}}>
+        <div style={{display: "flex", background: "linear-gradient(to right, #94c02b, #71912a)", flex:1}}>
             <div style={{
                 display: "flex",
                 flexDirection: "column",
@@ -232,8 +232,11 @@ export const LearnPage = () => {
                     {actualQuestion.displayId}/{questions.length}
                 </div>
             </div>
-            <div style={{color: 'black', width: '90%'}}>
-                <p>{replaceUnderscoreWithSpace(param ? param : '').toUpperCase()}</p>
+            <div style={{color: 'black', width: '90%',
+                display:'inline-block',
+                textAlign:'center',
+            }}>
+                {replaceUnderscoreWithSpace(param ? param : '').toUpperCase()}
             </div>
         </div>
 
