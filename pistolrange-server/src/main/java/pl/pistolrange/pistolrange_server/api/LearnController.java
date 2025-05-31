@@ -16,9 +16,12 @@ public class LearnController {
 
     private final LearnService learnService;
 
-    @GetMapping("/category/{category}")
-    public List<QuestionDto> getQuestionsByCategory(@PathVariable("category") String category){
+    @GetMapping("/category/{category}/{randomQuestions}")
+    public List<QuestionDto> getQuestionsByCategory(
+            @PathVariable("category") String category,
+            @PathVariable("randomQuestions") boolean randomQuestions
+    ){
         var cat = WeaponLawCategory.valueOf(category.toUpperCase());
-        return learnService.getQuestionByCategory(cat);
+        return learnService.getQuestionByCategory(cat, randomQuestions);
     }
 }

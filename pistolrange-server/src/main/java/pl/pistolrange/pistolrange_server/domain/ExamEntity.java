@@ -14,11 +14,7 @@ public class ExamEntity {
 
     @Id
     private String id;
-
     private int examDuration;
-
     private int goodAnswersToPass;
-
     private int answersCount;
-
 }

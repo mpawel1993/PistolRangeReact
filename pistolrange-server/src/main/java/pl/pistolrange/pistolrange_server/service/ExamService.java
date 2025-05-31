@@ -20,17 +20,19 @@ public class ExamService {
     private final QuestionMapper questionMapper;
     private final ExamRepository examRepository;
 
-    public List<QuestionDto> loadQuestionsForExam(){
+    public List<QuestionDto> loadQuestionsForExam() {
         var questions = questionsRepository.findAll();
         Collections.shuffle(questions);
         AtomicInteger counter = new AtomicInteger(1);
 
-        return questions.subList(0, 10).stream()
+        ExamEntity examEntity = examRepository.findById(EXAM_DETAILS_ID)
+                .orElseThrow(() -> new RuntimeException("Exam Details not found"));
+
+        return questions.subList(0, examEntity.getAnswersCount()).stream()
                 .map(questionMapper::mapToDto)
                 .peek(item -> item.setDisplayId(counter.getAndIncrement()))
                 .toList();
     }
-
 
     public ExamEntity getExamDetails() {
         return examRepository.findById(EXAM_DETAILS_ID)
