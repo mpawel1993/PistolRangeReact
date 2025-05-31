@@ -26,6 +26,12 @@ export interface LearnPageParams {
     storageKey: string
 }
 
+export interface ExamDetails{
+    examDuration: number,
+    goodAnswersToPass: number,
+    answersCount: number,
+}
+
 export const WeaponLawCategory = Object.freeze({
     WSZYSTKIE: "WSZYSTKIE",
     USTAWA_O_BRONI_I_AMUNICJI: "USTAWA_O_BRONI_I_AMUNICJI",

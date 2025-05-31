@@ -1,24 +1,14 @@
-package pl.pistolrange.pistolrange_server.domain;
+package pl.pistolrange.pistolrange_server.api.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
-
-@Entity(name = "EXAM_DETAILS")
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExamEntity {
-
-    @Id
-    private String id;
-
+public class ExamDetailsDto {
     private int examDuration;
-
     private int goodAnswersToPass;
-
     private int answersCount;
-
 }

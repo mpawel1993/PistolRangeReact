@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {PossibleAnswer, Question} from "../model/model";
+import {ExamDetails, PossibleAnswer, Question} from "../model/model";
 import AnswerField from "./answerField";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -13,13 +13,8 @@ import {goodAnswersCounter, isExamSummaryVisible} from "../atoms/app-atoms";
 import {useSetAtom} from "jotai";
 
 export const ExamPage = () => {
-    const location = useLocation();
     const navigate = useNavigate();
-
-    const [questions, setQuestions] = useState([] as Question[]); //Filtered questions list
-    const [time, setTime] = useState(1800 || 10);
-    const [formattedTime, setFormattedTime] = useState('30min: 0 sec');
-    const timerRef = useRef(time);
+    const [questions, setQuestions] = useState([] as Question[]);
     const [actualQuestion, setActualQuestion] = useState(initQuestion);
     const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
     const [previousDisabled, setPreviousButtonDisabled] = useState(false);
@@ -28,12 +23,25 @@ export const ExamPage = () => {
     const [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
     const setIsSummaryOpen = useSetAtom(isExamSummaryVisible);
     const setGoodAnswers = useSetAtom(goodAnswersCounter);
+    const [time, setTime] = useState(-1);
+    const [isTimerRunning, setIsTimerRunning] = useState(true);
 
     useEffect(() => {
         fetch('/exam/load')
             .then((response) => response.json())
-            .then((result) => setQuestions(result))
+            .then((questions: Question[]) => setQuestions(questions))
             .catch((error) => console.error("Error fetching data:", error));
+
+        fetch('/exam/details')
+            .then((response) => response.json())
+            .then((examDetails : ExamDetails) => {
+                setTime(examDetails.examDuration)
+                setIsTimerRunning(true);
+            })
+            .catch((error) => {
+                setIsTimerRunning(false);
+                console.error("Error fetching data:", error);
+            });
     }, []);
 
     useEffect(() => {
@@ -64,32 +72,26 @@ export const ExamPage = () => {
             setPreviousButtonDisabled(false);
         }
     }, [actualQuestion]);
-    useEffect(() => {
-        const timerId = setInterval(() => {
-            timerRef.current -= 1;
-            if (timerRef.current < 0) {
-                clearInterval(timerId);
-            } else {
-                setTime(timerRef.current);
-                setFormattedTime(secondsToHms(timerRef.current));
-            }
-            if (timerRef.current < 0 && !isExamSummarised) {
-                handleQuit();
-            }
-        }, 1000);
-        return () => {
-            clearInterval(timerId);
-        };
-    }, []);
 
-    function secondsToHms(d: number) {
-        d = Number(d);
-        var m = Math.floor(d % 3600 / 60);
-        var s = Math.floor(d % 3600 % 60);
-        var mDisplay = m > 0 ? m + (m == 1 ? " min : " : " min : ") : "";
-        var sDisplay = s > 0 ? s + (s == 1 ? " s" : " s") : "";
-        return mDisplay + sDisplay;
-    }
+    useEffect(() => {
+        if (!isTimerRunning) return;
+        if (time === -1) return;
+        if(isExamSummarised) return;
+        const interval = setInterval(() => {
+            setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [isTimerRunning, time]);
+
+    useEffect(() => {
+        if (time !== -1) {
+            console.log(time);
+            if (time === 0) {
+                setIsTimerRunning(false);
+                summaryExam();
+            }
+        }
+    }, [time]);
 
     const handleQuit = () => {
         summaryExam();
@@ -203,7 +205,7 @@ export const ExamPage = () => {
                 </div>
             </div>
             <div style={{color: 'black', width: '100%'}}>
-                <p>EGZAMIN : {!isExamSummarised ? formattedTime : '--:--'}</p>
+                <p>EGZAMIN : {!isExamSummarised ? <>{Math.floor(time / 60)} min: {time % 60 < 10 ? `0${time % 60}`: time % 60}</> : '--:--'}</p>
             </div>
         </div>
 
