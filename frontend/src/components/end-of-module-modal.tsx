@@ -3,11 +3,11 @@ import HomeIcon from "@mui/icons-material/Home";
 import {Box, Modal} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useAtom} from "jotai/index";
-import {isExamSummaryVisible, isModuleSummaryVisible} from "../atoms/app-atoms";
+import {isExamSummaryVisibleAtom, isModuleSummaryVisibleAtom} from "../atoms/app-atoms";
 
 export const EndOfModuleModal = () => {
 
-    const [isSummaryOpen, setIsSummaryOpen] = useAtom(isModuleSummaryVisible);
+    const [isSummaryOpen, setIsSummaryOpen] = useAtom(isModuleSummaryVisibleAtom);
 
     useEffect(() => {
         return () => {

@@ -9,7 +9,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import banger from "../assets/badger.png";
 import {initQuestion} from "../model/init-data";
 import ExamSummary from "./exam-summary";
-import {goodAnswersCounter, isExamSummaryVisible} from "../atoms/app-atoms";
+import {examDetailsAtom, goodAnswersCounterAtom, isExamSummaryVisibleAtom} from "../atoms/app-atoms";
 import {useSetAtom} from "jotai";
 
 export const ExamPage = () => {
@@ -21,8 +21,9 @@ export const ExamPage = () => {
     const [wasSummaryDisplayed, setWasSummaryDisplayed] = useState(false);
     const [isExamSummarised, setIsExamSummarised] = useState(false);
     const [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
-    const setIsSummaryOpen = useSetAtom(isExamSummaryVisible);
-    const setGoodAnswers = useSetAtom(goodAnswersCounter);
+    const setIsSummaryOpen = useSetAtom(isExamSummaryVisibleAtom);
+    const setGoodAnswers = useSetAtom(goodAnswersCounterAtom);
+    const setExamDetails = useSetAtom(examDetailsAtom);
     const [time, setTime] = useState(-1);
     const [isTimerRunning, setIsTimerRunning] = useState(true);
 
@@ -34,9 +35,10 @@ export const ExamPage = () => {
 
         fetch('/exam/details')
             .then((response) => response.json())
-            .then((examDetails : ExamDetails) => {
+            .then((examDetails: ExamDetails) => {
                 setTime(examDetails.examDuration)
                 setIsTimerRunning(true);
+                setExamDetails(examDetails);
             })
             .catch((error) => {
                 setIsTimerRunning(false);
@@ -76,7 +78,7 @@ export const ExamPage = () => {
     useEffect(() => {
         if (!isTimerRunning) return;
         if (time === -1) return;
-        if(isExamSummarised) return;
+        if (isExamSummarised) return;
         const interval = setInterval(() => {
             setTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
         }, 1000);
@@ -85,7 +87,6 @@ export const ExamPage = () => {
 
     useEffect(() => {
         if (time !== -1) {
-            console.log(time);
             if (time === 0) {
                 setIsTimerRunning(false);
                 summaryExam();
@@ -205,7 +206,8 @@ export const ExamPage = () => {
                 </div>
             </div>
             <div style={{color: 'black', width: '100%'}}>
-                <p>EGZAMIN : {!isExamSummarised ? <>{Math.floor(time / 60)} min: {time % 60 < 10 ? `0${time % 60}`: time % 60}</> : '--:--'}</p>
+                <p>EGZAMIN
+                    : {!isExamSummarised ? <>{Math.floor(time / 60)} min: {time % 60 < 10 ? `0${time % 60}` : time % 60}</> : '--:--'}</p>
             </div>
         </div>
 

@@ -9,7 +9,7 @@ import banger from "../assets/badger.png"
 import learningImage from "../assets/learning_image.png";
 import {initQuestion} from "../model/init-data";
 import {useSetAtom} from "jotai";
-import {isModuleSummaryVisible} from "../atoms/app-atoms";
+import {isModuleSummaryVisibleAtom} from "../atoms/app-atoms";
 import EndOfModuleModal from "./end-of-module-modal";
 
 export const LearnPage = () => {
@@ -25,7 +25,7 @@ export const LearnPage = () => {
     const [isStorageItemsExist, setIsStorageItemsExist] = useState(false);
     const [userResponse, setUserResponse] = useState('yes');
 
-    const setIsSummaryVisible = useSetAtom(isModuleSummaryVisible);
+    const setIsSummaryVisible = useSetAtom(isModuleSummaryVisibleAtom);
 
     useEffect(() => {
         fetch(`/learn/category/${param}`)

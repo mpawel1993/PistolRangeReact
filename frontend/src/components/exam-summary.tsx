@@ -1,12 +1,13 @@
 import {Box, Modal} from "@mui/material";
 import {useEffect} from "react";
-import {useAtom} from "jotai";
-import {goodAnswersCounter, isExamSummaryVisible} from "../atoms/app-atoms";
+import {useAtom, useAtomValue} from "jotai";
+import {examDetailsAtom, goodAnswersCounterAtom, isExamSummaryVisibleAtom} from "../atoms/app-atoms";
 
 export const ExamSummary = () => {
 
-    const [isSummaryOpen, setIsSummaryOpen] = useAtom(isExamSummaryVisible);
-    const [goodAnswersCount, setGoodAnswersCount] = useAtom(goodAnswersCounter);
+    const [isSummaryOpen, setIsSummaryOpen] = useAtom(isExamSummaryVisibleAtom);
+    const [goodAnswersCount, setGoodAnswersCount] = useAtom(goodAnswersCounterAtom);
+    const examDetails = useAtomValue(examDetailsAtom);
 
     useEffect(() => {
         return () => {
@@ -25,10 +26,10 @@ export const ExamSummary = () => {
         <Box sx={style}>
             <div style={{color: '#98c135'}}>
                 UKOŃCZONO EGZAMIN
-                {goodAnswersCount == 8 ? <div style={{color: 'red'}}>ZALICZONO</div> :
+                {goodAnswersCount == examDetails.goodAnswersToPass ? <div style={{color: 'red'}}>ZALICZONO</div> :
                     <div style={{color: 'red'}}>NIE ZALICZONO</div>}
                 <div style={{color: 'green'}}>DOBRZE: {goodAnswersCount} </div>
-                <div style={{color: 'red'}}> ŹLE: {10 - goodAnswersCount}</div>
+                <div style={{color: 'red'}}> ŹLE: {examDetails.answersCount - goodAnswersCount}</div>
             </div>
         </Box>
     </Modal>)

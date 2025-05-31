@@ -1,5 +1,7 @@
 import {atom} from "jotai";
+import {initExamDetails} from "../model/init-data";
 
-export const isExamSummaryVisible = atom(false);
-export const isModuleSummaryVisible = atom(false);
-export const goodAnswersCounter = atom(0);
+export const isExamSummaryVisibleAtom = atom(false);
+export const isModuleSummaryVisibleAtom = atom(false);
+export const goodAnswersCounterAtom = atom(0);
+export const examDetailsAtom = atom(initExamDetails);
