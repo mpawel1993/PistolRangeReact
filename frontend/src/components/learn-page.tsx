@@ -18,9 +18,8 @@ import {replaceUnderscoreWithSpace} from "../utils";
 import FromBeginModal from "./from-begin-modal";
 
 export const LearnPage = () => {
-    const { param } = useParams();
+    const {param} = useParams();
     const navigate = useNavigate();
-
     const [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
     const [questions, setQuestions] = useState([] as Question[]);
     const [actualQuestion, setActualQuestion] = useState(initQuestion);
@@ -36,7 +35,7 @@ export const LearnPage = () => {
         setStorageKey(param as string);
         checkLocalStorageData();
 
-        const randomQuestionsStorage  = localStorage.getItem('pistol_range_random_questions');
+        const randomQuestionsStorage = localStorage.getItem('pistol_range_random_questions');
         const randomQuestions = randomQuestionsStorage ? randomQuestionsStorage : 'false';
 
         fetch(`/learn/category/${param}/${randomQuestions}`)
@@ -92,15 +91,12 @@ export const LearnPage = () => {
 
     const handlePickUp = (option: string) => {
         if (!actualQuestion.isButtonsDisabled) {
-            let question = actualQuestion;
-            question.actualAnswer = undefined;
-            question.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
-            setActualQuestion({...question});
-            question.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
-            question.actualAnswer = option;
-            setActualQuestion({...question});
-            questions[actualQuestion.displayId - 1].actualAnswer = option;
-            setQuestions(questions);
+            actualQuestion.actualAnswer = undefined;
+            actualQuestion.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
+            setActualQuestion({...actualQuestion});
+            actualQuestion.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
+            actualQuestion.actualAnswer = option;
+            setActualQuestion({...actualQuestion});
         }
     }
 
@@ -119,7 +115,7 @@ export const LearnPage = () => {
                     setQuestions(questions);
                 } else {
                     question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#500000', '#740000'];
-                    setActualQuestion(question);
+                    setActualQuestion({...question});
                 }
             } else {
                 if (!question.isButtonsDisabled) {
@@ -137,7 +133,7 @@ export const LearnPage = () => {
                         storeData();
                     } else {
                         question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#500000', '#740000'];
-                        setActualQuestion(question);
+                        setActualQuestion({...question});
                     }
                 } else {
                     setActualQuestion(next);
@@ -210,8 +206,8 @@ export const LearnPage = () => {
     }
 
     return (<div>
-        <EndOfModuleModal />
-        <FromBeginModal />
+        <EndOfModuleModal/>
+        <FromBeginModal/>
 
         <div style={{display: "flex", background: "linear-gradient(to right, #94c02b, #71912a)"}}>
             <div style={{
@@ -225,11 +221,17 @@ export const LearnPage = () => {
                     }} src={banger} alt="Logo"/>
                 </div>
 
-                <div style={{color:'black' , alignItems: 'center', justifyContent: 'center', display: 'flex', width: '70%'}}>
+                <div style={{
+                    color: 'black',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    width: '70%'
+                }}>
                     {actualQuestion.displayId}/{questions.length}
                 </div>
             </div>
-            <div style={{color:'black', width: '90%'}}>
+            <div style={{color: 'black', width: '90%'}}>
                 <p>{replaceUnderscoreWithSpace(param ? param : '').toUpperCase()}</p>
             </div>
         </div>
@@ -278,7 +280,7 @@ export const LearnPage = () => {
 }
 
 const navButtonStyle = {
-    color:'black',
+    color: 'black',
     padding: 15,
     margin: 10,
     fontFamily: 'Bahnschrift',

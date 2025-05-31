@@ -105,15 +105,12 @@ export const ExamPage = () => {
 
     const handlePickUp = (option: string) => {
         if (!actualQuestion.isButtonsDisabled) {
-            let question = actualQuestion;
-            question.actualAnswer = undefined;
-            question.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
-            setActualQuestion({...question});
-            question.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
-            question.actualAnswer = option;
-            setActualQuestion({...question});
-            questions[actualQuestion.displayId - 1].actualAnswer = option;
-            setQuestions(questions);
+            actualQuestion.actualAnswer = undefined;
+            actualQuestion.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
+            setActualQuestion({...actualQuestion});
+            actualQuestion.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
+            actualQuestion.actualAnswer = option;
+            setActualQuestion({...actualQuestion});
         }
     }
 
