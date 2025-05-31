@@ -102,7 +102,6 @@ export const LearnPage = () => {
 
     const handleNextQuestion = () => {
         let question = actualQuestion;
-
         if (actualQuestion.actualAnswer !== undefined) {
             let nextId = JSON.parse(JSON.stringify(question.displayId));
             nextId++;
@@ -111,6 +110,7 @@ export const LearnPage = () => {
                 if (question.actualAnswer === question.goodAnswer) {
                     question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#085908', '#28a628'];
                     setIsSummaryVisible(true);
+                    setActualQuestion({...question});
                     questions[question.displayId - 1].isButtonsDisabled = true
                     setQuestions(questions);
                 } else {
@@ -129,6 +129,7 @@ export const LearnPage = () => {
                         question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#085908', '#28a628'];
                         questions[id - 1].isButtonsDisabled = true
                         setQuestions(questions);
+                        next.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
                         setActualQuestion(next);
                         storeData();
                     } else {

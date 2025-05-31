@@ -11,7 +11,7 @@ export interface Question {
 export interface PossibleAnswer {
     id: string;
     value: string;
-    gradient: any;
+    gradient: string[];
     isPicked: boolean;
 }
 

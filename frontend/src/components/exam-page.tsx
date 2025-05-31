@@ -107,7 +107,6 @@ export const ExamPage = () => {
         if (!actualQuestion.isButtonsDisabled) {
             actualQuestion.actualAnswer = undefined;
             actualQuestion.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
-            setActualQuestion({...actualQuestion});
             actualQuestion.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
             actualQuestion.actualAnswer = option;
             setActualQuestion({...actualQuestion});
@@ -119,6 +118,11 @@ export const ExamPage = () => {
             let nextId = JSON.parse(JSON.stringify(actualQuestion.displayId));
             nextId++;
             let next = questions.filter(x => x.displayId == nextId)[0];
+            next.possibleAnswer.map(x => {
+                if (x.gradient == undefined) {
+                    x.gradient = ['#94c02b', '#71912a']
+                }
+            });
             if (nextId === questions.length) {
                 setNextButtonDisabled(true);
             } else {
