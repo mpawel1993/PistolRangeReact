@@ -39,8 +39,6 @@ export const AnswerField = ({option, possibleAnswer, gradientColours, isPicked, 
                     width: '95%',
                     outline: 'none',
                     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
-                    opacity: isPicked ? 0.5 : 1,
-                    pointerEvents: isPicked ? 'none' : 'auto'
                 }}>
                     {possibleAnswer}
                 </button>

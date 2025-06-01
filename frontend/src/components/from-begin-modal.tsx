@@ -19,7 +19,7 @@ export const FromBeginModal = () => {
     useEffect(() => {
         return () => {
             setIsFromVisible(false);
-            setIsFromBegin(false);
+            setIsFromBegin(true);
         };
     }, []);
 
@@ -39,7 +39,7 @@ export const FromBeginModal = () => {
                 textAlign: 'center',
                 color: 'white',
             }}>
-                Kontunuacja?
+                OD NOWA?
                 <br/>
                 <br/>
                 <div onClick={() => {

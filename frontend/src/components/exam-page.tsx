@@ -106,8 +106,12 @@ export const ExamPage = () => {
     const handlePickUp = (option: string) => {
         if (!actualQuestion.isButtonsDisabled) {
             actualQuestion.actualAnswer = undefined;
-            actualQuestion.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
+            actualQuestion.possibleAnswer.map(x => {
+                x.gradient = ['#94c02b', '#71912a'];
+                x.isPicked = false;
+            });
             actualQuestion.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
+            actualQuestion.possibleAnswer.filter(x => x.id == option)[0].isPicked = true;
             actualQuestion.actualAnswer = option;
             setActualQuestion({...actualQuestion});
         }
@@ -225,14 +229,14 @@ export const ExamPage = () => {
                          gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].gradient}
                          option={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].id}
                          possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].value}
-                         isPicked={false}/>
+                         isPicked={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].isPicked}/>
         </div>
         <div onClick={() => handlePickUp('b')}>
             <AnswerField disabled={actualQuestion.isButtonsDisabled}
                          gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].gradient}
                          option={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].id}
                          possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].value}
-                         isPicked={false}/>
+                         isPicked={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].isPicked}/>
         </div>
 
         <div onClick={() => handlePickUp('c')}>
@@ -240,7 +244,7 @@ export const ExamPage = () => {
                          gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].gradient}
                          option={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].id}
                          possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].value}
-                         isPicked={false}/>
+                         isPicked={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].isPicked}/>
         </div>
 
         <div style={{display: 'flex', justifyContent: 'center'}}>

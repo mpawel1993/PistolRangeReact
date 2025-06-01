@@ -4,9 +4,9 @@ export const initQuestion = {
     displayId: 1,
     isButtonsDisabled: true,
     value: '', possibleAnswer:
-        [{id: 'a', value: '', gradient: ['white', 'white']} as PossibleAnswer,
-            {id: 'b', value: '', gradient: ['white', 'white']} as PossibleAnswer,
-            {id: 'c', value: '', gradient: ['white', 'white']} as PossibleAnswer]
+        [{id: 'a', value: '', gradient: ['white', 'white'], isPicked: false} as PossibleAnswer,
+            {id: 'b', value: '', gradient: ['white', 'white'], isPicked: false} as PossibleAnswer,
+            {id: 'c', value: '', gradient: ['white', 'white'], isPicked: false} as PossibleAnswer]
 } as Question
 
 export const initExamDetails = {

@@ -157,8 +157,7 @@ export const LearnPage = () => {
     }
 
     useEffect(() => {
-        if (fromBeginUserResponse) {
-            console.log(fromBeginUserResponse);
+        if (!fromBeginUserResponse) {
             readLocalStorageData();
         }
     }, [fromBeginUserResponse]);
