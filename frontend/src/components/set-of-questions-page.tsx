@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import learningImage from '../assets/learning_image.png';
 import {WeaponLawCategory} from "../model/model";
-import { replaceUnderscoreWithSpace } from "../utils";
+import {replaceUnderscoreWithSpace} from "../utils";
 
 const SetOfQuestionsPage = () => {
 

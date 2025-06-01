@@ -1,6 +1,6 @@
-import {useEffect, useRef, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
-import {ExamDetails, PossibleAnswer, Question} from "../model/model";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {ExamDetails, Question} from "../model/model";
 import AnswerField from "./answerField";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";

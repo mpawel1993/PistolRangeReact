@@ -1,9 +1,7 @@
-import {useNavigate} from "react-router-dom";
-import HomeIcon from "@mui/icons-material/Home";
 import {Box, Modal} from "@mui/material";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useAtom} from "jotai/index";
-import {isExamSummaryVisibleAtom, isModuleSummaryVisibleAtom} from "../atoms/app-atoms";
+import {isModuleSummaryVisibleAtom} from "../atoms/app-atoms";
 import passed from "../assets/passed.gif";
 import Field from "./field";
 import {defaultModalStyle} from "../deafults";
