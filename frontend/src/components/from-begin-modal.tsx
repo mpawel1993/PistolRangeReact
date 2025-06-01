@@ -19,6 +19,7 @@ export const FromBeginModal = () => {
     useEffect(() => {
         return () => {
             setIsFromVisible(false);
+            setIsFromBegin(false);
         };
     }, []);
 
@@ -38,17 +39,17 @@ export const FromBeginModal = () => {
                 textAlign: 'center',
                 color: 'white',
             }}>
-                Od poczatku ?
+                Kontunuacja?
                 <br/>
                 <br/>
                 <div onClick={() => {
-                    setIsFromBegin(false);
+                    setIsFromBegin(true);
                     setIsFromVisible(false);
                 }}>
                     <Field text="Tak"/>
                 </div>
                 <div onClick={() => {
-                    setIsFromBegin(true);
+                    setIsFromBegin(false);
                     setIsFromVisible(false);
                 }}>
                     <Field text="Nie"/>
