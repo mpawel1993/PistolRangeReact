@@ -6,6 +6,7 @@ import {useAtom} from "jotai/index";
 import {isExamSummaryVisibleAtom, isModuleSummaryVisibleAtom} from "../atoms/app-atoms";
 import passed from "../assets/passed.gif";
 import Field from "./field";
+import {defaultModalStyle} from "../deafults";
 
 export const EndOfModuleModal = () => {
 
@@ -22,22 +23,7 @@ export const EndOfModuleModal = () => {
             open={isSummaryOpen}
             onClose={() => setIsSummaryOpen(false)}
         >
-            <Box sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)", // Centers the modal
-                bgcolor: "background.paper",
-                boxShadow: 24,
-                p: 4,
-                borderRadius: 2,
-                width: '100%',
-                maxWidth: '500px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
+            <Box sx={defaultModalStyle}>
                 <div style={{color: '#98c135', textAlign: 'center'}}>
                     UKOŃCZONO MODUŁ
                     <img style={{

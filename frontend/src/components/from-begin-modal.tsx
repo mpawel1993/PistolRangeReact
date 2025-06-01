@@ -9,6 +9,7 @@ import {useEffect} from "react";
 import {Box, Modal} from "@mui/material";
 import Field from "./field";
 import {useSetAtom} from "jotai";
+import {defaultModalStyle} from "../deafults";
 
 export const FromBeginModal = () => {
 
@@ -27,24 +28,7 @@ export const FromBeginModal = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)", // Centers the modal
-            bgcolor: "black",
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
-            border: '2px solid white',
-            borderColor: 'white',
-            width: '80%',
-            maxWidth: '500px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
+        <Box sx={defaultModalStyle}>
             <div style={{
                 display: 'inline-block',
                 flexDirection: 'column',

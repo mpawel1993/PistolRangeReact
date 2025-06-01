@@ -5,6 +5,7 @@ import {examDetailsAtom, goodAnswersCounterAtom, isExamSummaryVisibleAtom} from 
 import passed from "../assets/passed.gif";
 import failed from "../assets/failed.gif";
 import Field from "./field";
+import {defaultModalStyle} from "../deafults";
 
 export const ExamSummary = () => {
 
@@ -24,25 +25,7 @@ export const ExamSummary = () => {
         open={isSummaryOpen}
         onClose={() => setIsSummaryOpen(false)}
     >
-        <Box sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)", // Centers the modal
-            bgcolor: "black",
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
-            width: '80%',
-            border: '2px solid white',
-            borderColor: 'white',
-            maxWidth: '500px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-        }}>
+        <Box sx={{...defaultModalStyle, textAlign: 'center'}}>
             <div style={{color: '#98c135'}}>
                 UKOŃCZONO EGZAMIN
                 {goodAnswersCount == examDetails.goodAnswersToPass ?
@@ -58,7 +41,7 @@ export const ExamSummary = () => {
                 <div style={{color: 'green'}}>DOBRZE: {goodAnswersCount} </div>
                 <div style={{color: 'red'}}> ŹLE: {examDetails.answersCount - goodAnswersCount}</div>
             </div>
-            <div>
+            <div onClick={() => setIsSummaryOpen(false)}>
                 <Field text="PRZEGLĄDAJ"/>
             </div>
         </Box>
