@@ -1,6 +1,6 @@
-import {SetStateAction, useCallback, useEffect, useState} from "react";
-import {PossibleAnswer, Question, StorageObject} from "../model/model";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Question, StorageObject} from "../model/model";
+import {useNavigate, useParams} from "react-router-dom";
 import AnswerField from "./answerField";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -9,9 +9,11 @@ import banger from "../assets/badger.png"
 import {initQuestion} from "../model/init-data";
 import {useAtomValue, useSetAtom} from "jotai";
 import {
+    fromBeginUserEventAtom,
     fromBeginUserResponseAtom,
     isFromBeginModalVisibleAtom,
     isModuleSummaryVisibleAtom,
+    storedQuestionCounterAtom,
 } from "../atoms/app-atoms";
 import EndOfModuleModal from "./end-of-module-modal";
 import {replaceUnderscoreWithSpace} from "../utils";
@@ -30,6 +32,8 @@ export const LearnPage = () => {
     const setIsSummaryVisible = useSetAtom(isModuleSummaryVisibleAtom);
     const setIsFromBeginModalVisible = useSetAtom(isFromBeginModalVisibleAtom);
     const fromBeginUserResponse = useAtomValue(fromBeginUserResponseAtom);
+    const fromBeginEvent = useAtomValue(fromBeginUserEventAtom);
+    const setStoredQuestionProgress = useSetAtom(storedQuestionCounterAtom);
 
     useEffect(() => {
         setStorageKey(param as string);
@@ -160,7 +164,7 @@ export const LearnPage = () => {
         if (!fromBeginUserResponse) {
             readLocalStorageData();
         }
-    }, [fromBeginUserResponse]);
+    }, [fromBeginUserResponse, fromBeginEvent]);
 
     useEffect(() => {
         if (storageKey != '') {
@@ -186,6 +190,12 @@ export const LearnPage = () => {
         try {
             const item = localStorage.getItem(storageKey);
             if (item !== null) {
+                let parsed = JSON.parse(item) as StorageObject;
+                setStoredQuestionProgress('(' + parsed.actualQuestion.displayId + '/' + parsed.questions.length + ')');
+                setQuestions(parsed.questions);
+                setActualQuestion(
+                    parsed.actualQuestion
+                )
                 setIsStorageItemsExist(true);
             }
         } catch (error) {

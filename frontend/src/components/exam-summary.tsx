@@ -28,7 +28,7 @@ export const ExamSummary = () => {
         <Box sx={{...defaultModalStyle, textAlign: 'center'}}>
             <div style={{color: '#98c135'}}>
                 UKOŃCZONO EGZAMIN
-                {goodAnswersCount == examDetails.goodAnswersToPass ?
+                {goodAnswersCount >= examDetails.goodAnswersToPass ?
                     <img style={{
                         width: '100%',
                         height: 'auto'

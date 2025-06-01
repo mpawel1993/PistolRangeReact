@@ -7,3 +7,5 @@ export const goodAnswersCounterAtom = atom(0);
 export const examDetailsAtom = atom(initExamDetails);
 export const isFromBeginModalVisibleAtom = atom(false);
 export const fromBeginUserResponseAtom = atom(false);
+export const fromBeginUserEventAtom = atom(0);
+export const storedQuestionCounterAtom = atom("(-/-)");

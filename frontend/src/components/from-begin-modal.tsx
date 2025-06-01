@@ -1,9 +1,9 @@
-import {useAtom, useAtomValue} from "jotai/index";
+import {useAtom} from "jotai/index";
 import {
-    examDetailsAtom, fromBeginUserResponseAtom,
-    goodAnswersCounterAtom,
-    isExamSummaryVisibleAtom,
-    isFromBeginModalVisibleAtom
+    fromBeginUserEventAtom,
+    fromBeginUserResponseAtom,
+    isFromBeginModalVisibleAtom,
+    storedQuestionCounterAtom
 } from "../atoms/app-atoms";
 import {useEffect} from "react";
 import {Box, Modal} from "@mui/material";
@@ -15,6 +15,8 @@ export const FromBeginModal = () => {
 
     const [isFromBeginVisible, setIsFromVisible] = useAtom(isFromBeginModalVisibleAtom);
     const setIsFromBegin = useSetAtom(fromBeginUserResponseAtom);
+    const [fromBeginEvent, setFromBeginEvent] = useAtom(fromBeginUserEventAtom);
+    const storedQuestionCounter = useAtom(storedQuestionCounterAtom);
 
     useEffect(() => {
         return () => {
@@ -42,15 +44,24 @@ export const FromBeginModal = () => {
                 OD NOWA?
                 <br/>
                 <br/>
+                <> Poprzedni progres: {storedQuestionCounter}</>
+                <br/>
+                <br/>
                 <div onClick={() => {
                     setIsFromBegin(true);
                     setIsFromVisible(false);
+                    let event = fromBeginEvent
+                    event++;
+                    setFromBeginEvent(event);
                 }}>
                     <Field text="Tak"/>
                 </div>
                 <div onClick={() => {
                     setIsFromBegin(false);
                     setIsFromVisible(false);
+                    let event = fromBeginEvent
+                    event++;
+                    setFromBeginEvent(event);
                 }}>
                     <Field text="Nie"/>
                 </div>
