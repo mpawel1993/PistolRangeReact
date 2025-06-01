@@ -27,39 +27,50 @@ export const FromBeginModal = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
     >
-        <Box sx={style}>
-            <div>
+        <Box sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)", // Centers the modal
+            bgcolor: "black",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+            border: '2px solid white',
+            borderColor: 'white',
+            width: '80%',
+            maxWidth: '500px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <div style={{
+                display: 'inline-block',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '90%',
+                textAlign: 'center',
+                color: 'white',
+            }}>
                 Od poczatku ?
-                <div onClick={() => {
-                    setIsFromBegin(true);
-                    setIsFromVisible(false);
-                }}>
-                    <Field text="Tak" />
-                </div>
+                <br/>
+                <br/>
                 <div onClick={() => {
                     setIsFromBegin(false);
                     setIsFromVisible(false);
                 }}>
-                    <Field text="Nie" />
+                    <Field text="Tak"/>
+                </div>
+                <div onClick={() => {
+                    setIsFromBegin(true);
+                    setIsFromVisible(false);
+                }}>
+                    <Field text="Nie"/>
                 </div>
             </div>
         </Box>
     </Modal>)
 }
-
-const style = {
-    position: 'fixed',
-    top: '10px',
-    left: '50%',
-    transform: 'translate(-50%)',
-    width: '100%',
-    maxWidth: '1000px',
-    bgcolor: 'white',
-    border: '2px solid #000',
-    p: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-};
 export default FromBeginModal;

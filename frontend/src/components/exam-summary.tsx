@@ -2,6 +2,9 @@ import {Box, Modal} from "@mui/material";
 import {useEffect} from "react";
 import {useAtom, useAtomValue} from "jotai";
 import {examDetailsAtom, goodAnswersCounterAtom, isExamSummaryVisibleAtom} from "../atoms/app-atoms";
+import passed from "../assets/passed.gif";
+import failed from "../assets/failed.gif";
+import Field from "./field";
 
 export const ExamSummary = () => {
 
@@ -20,34 +23,45 @@ export const ExamSummary = () => {
     return (<Modal
         open={isSummaryOpen}
         onClose={() => setIsSummaryOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
     >
-        <Box sx={style}>
+        <Box sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)", // Centers the modal
+            bgcolor: "black",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+            width: '80%',
+            border: '2px solid white',
+            borderColor: 'white',
+            maxWidth: '500px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+        }}>
             <div style={{color: '#98c135'}}>
                 UKOŃCZONO EGZAMIN
-                {goodAnswersCount == examDetails.goodAnswersToPass ? <div style={{color: 'red'}}>ZALICZONO</div> :
-                    <div style={{color: 'red'}}>NIE ZALICZONO</div>}
+                {goodAnswersCount == examDetails.goodAnswersToPass ?
+                    <img style={{
+                        width: '100%',
+                        height: 'auto'
+                    }} src={passed} alt="Logo"/> :
+                    <img style={{
+                        width: '100%',
+                        height: 'auto'
+                    }} src={failed} alt="Logo"/>}
+
                 <div style={{color: 'green'}}>DOBRZE: {goodAnswersCount} </div>
                 <div style={{color: 'red'}}> ŹLE: {examDetails.answersCount - goodAnswersCount}</div>
+            </div>
+            <div>
+                <Field text="PRZEGLĄDAJ"/>
             </div>
         </Box>
     </Modal>)
 }
-
-const style = {
-    position: 'fixed',
-    top: '10px',
-    left: '50%',
-    transform: 'translate(-50%)',
-    width: '100%',
-    maxWidth: '1000px',
-    bgcolor: 'white',
-    border: '2px solid #000',
-    p: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-};
 export default ExamSummary;

@@ -4,6 +4,8 @@ import {Box, Modal} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useAtom} from "jotai/index";
 import {isExamSummaryVisibleAtom, isModuleSummaryVisibleAtom} from "../atoms/app-atoms";
+import passed from "../assets/passed.gif";
+import Field from "./field";
 
 export const EndOfModuleModal = () => {
 
@@ -15,34 +17,42 @@ export const EndOfModuleModal = () => {
         };
     }, []);
 
-    return (<Modal
-        open={isSummaryOpen}
-        onClose={() => setIsSummaryOpen(false)}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-    >
-        <Box sx={style}>
-            <div style={{color: '#98c135'}}>
-                UKOŃCZONO MODUL
-            </div>
-        </Box>
-    </Modal>)
+    return (<div>
+        <Modal
+            open={isSummaryOpen}
+            onClose={() => setIsSummaryOpen(false)}
+        >
+            <Box sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)", // Centers the modal
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+                width: '100%',
+                maxWidth: '500px',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
+                <div style={{color: '#98c135', textAlign: 'center'}}>
+                    UKOŃCZONO MODUŁ
+                    <img style={{
+                        width: '100%',
+                        height: 'auto'
+                    }} src={passed} alt="Logo"/>
+                </div>
+                <div style={{color: 'red', width: '100%', textAlign: 'center'}}
+                     onClick={() => setIsSummaryOpen(false)}
+                >
+                    <Field text="ZAMKNIJ"/>
+                </div>
+            </Box>
+        </Modal>
+    </div>)
 }
-
-const style = {
-    position: 'fixed',
-    top: '10px',
-    left: '50%',
-    transform: 'translate(-50%)',
-    width: '100%',
-    maxWidth: '1000px',
-    bgcolor: 'white',
-    border: '2px solid #000',
-    p: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-};
 
 export default EndOfModuleModal;
