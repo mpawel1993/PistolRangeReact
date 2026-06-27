@@ -1,6 +1,6 @@
 import './App.css';
 import WelcomePage from "./components/welcome-page";
-import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import {HashRouter as Router, Route, Routes} from "react-router-dom";
 import SetOfQuestionsPage from "./components/set-of-questions-page";
 import LearnPage from "./components/learn-page";
 import ActivityPage from "./components/activity-page";

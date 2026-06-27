@@ -18,6 +18,7 @@ import {
 import EndOfModuleModal from "./end-of-module-modal";
 import {replaceUnderscoreWithSpace} from "../utils";
 import FromBeginModal from "./from-begin-modal";
+import {getQuestionsByCategory} from "../services/question-service";
 
 export const LearnPage = () => {
     const {param} = useParams();
@@ -40,12 +41,9 @@ export const LearnPage = () => {
         checkLocalStorageData();
 
         const randomQuestionsStorage = localStorage.getItem('pistol_range_random_questions');
-        const randomQuestions = randomQuestionsStorage ? randomQuestionsStorage : 'false';
+        const randomQuestions = randomQuestionsStorage === 'true';
 
-        fetch(`/learn/category/${param}/${randomQuestions}`)
-            .then((response) => response.json())
-            .then((result) => setQuestions(result))
-            .catch((error) => console.error("Error fetching data:", error));
+        setQuestions(getQuestionsByCategory(param as string, randomQuestions));
     }, []);
 
     useEffect(() => {

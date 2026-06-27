@@ -11,6 +11,7 @@ import {initQuestion} from "../model/init-data";
 import ExamSummary from "./exam-summary";
 import {examDetailsAtom, goodAnswersCounterAtom, isExamSummaryVisibleAtom} from "../atoms/app-atoms";
 import {useSetAtom} from "jotai";
+import {getExamDetails, loadQuestionsForExam} from "../services/question-service";
 
 export const ExamPage = () => {
     const navigate = useNavigate();
@@ -28,22 +29,12 @@ export const ExamPage = () => {
     const [isTimerRunning, setIsTimerRunning] = useState(true);
 
     useEffect(() => {
-        fetch('/exam/load')
-            .then((response) => response.json())
-            .then((questions: Question[]) => setQuestions(questions))
-            .catch((error) => console.error("Error fetching data:", error));
+        setQuestions(loadQuestionsForExam());
 
-        fetch('/exam/details')
-            .then((response) => response.json())
-            .then((examDetails: ExamDetails) => {
-                setTime(examDetails.examDuration)
-                setIsTimerRunning(true);
-                setExamDetails(examDetails);
-            })
-            .catch((error) => {
-                setIsTimerRunning(false);
-                console.error("Error fetching data:", error);
-            });
+        const examDetails: ExamDetails = getExamDetails();
+        setTime(examDetails.examDuration);
+        setIsTimerRunning(true);
+        setExamDetails(examDetails);
     }, []);
 
     useEffect(() => {
