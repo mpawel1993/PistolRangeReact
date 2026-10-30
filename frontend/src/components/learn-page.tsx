@@ -1,308 +1,151 @@
 import {useEffect, useState} from "react";
-import {Question, StorageObject} from "../model/model";
-import {useNavigate, useParams} from "react-router-dom";
-import AnswerField from "./answerField";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import HomeIcon from '@mui/icons-material/Home';
-import banger from "../assets/badger.png"
-import {initQuestion} from "../model/init-data";
-import {useAtomValue, useSetAtom} from "jotai";
-import {
-    fromBeginUserEventAtom,
-    fromBeginUserResponseAtom,
-    isFromBeginModalVisibleAtom,
-    isModuleSummaryVisibleAtom,
-    storedQuestionCounterAtom,
-} from "../atoms/app-atoms";
-import EndOfModuleModal from "./end-of-module-modal";
-import {replaceUnderscoreWithSpace} from "../utils";
-import FromBeginModal from "./from-begin-modal";
-import {getQuestionsByCategory} from "../services/question-service";
+import {Navigate, useNavigate, useParams, useSearchParams} from "react-router-dom";
+import HomeIcon from "@mui/icons-material/Home";
+import QuestionCard from "./question-card";
+import QuestionNav from "./question-nav";
+import AppModal from "./app-modal";
+import MenuButton from "./menu-button";
+import passed from "../assets/passed.gif";
+import {AnswerState} from "../model";
+import {formatCategory} from "../utils";
+import {getQuestionsByCategory, getQuestionsByIds} from "../services/question-service";
+import {clearProgress, LearnProgress, loadProgress, saveProgress} from "../services/db";
 
 export const LearnPage = () => {
-    const {param} = useParams();
+    const {category = ""} = useParams();
+    const [searchParams] = useSearchParams();
+    const random = searchParams.get("random") === "true";
+
+    return <LearnSession key={`${category}:${random}`} category={category.toLowerCase()} random={random}/>;
+}
+
+const LearnSession = ({category, random}: { category: string, random: boolean }) => {
     const navigate = useNavigate();
-    const [isQuestionsLoaded, setIsQuestionLoaded] = useState(false);
-    const [questions, setQuestions] = useState([] as Question[]);
-    const [actualQuestion, setActualQuestion] = useState(initQuestion);
-    const [nextButtonDisabled, setNextButtonDisabled] = useState(false);
-    const [previousDisabled, setPreviousButtonDisabled] = useState(false);
-    const [storageKey, setStorageKey] = useState('');
-    const [isStorageItemsExist, setIsStorageItemsExist] = useState(false);
-    const setIsSummaryVisible = useSetAtom(isModuleSummaryVisibleAtom);
-    const setIsFromBeginModalVisible = useSetAtom(isFromBeginModalVisibleAtom);
-    const fromBeginUserResponse = useAtomValue(fromBeginUserResponseAtom);
-    const fromBeginEvent = useAtomValue(fromBeginUserEventAtom);
-    const setStoredQuestionProgress = useSetAtom(storedQuestionCounterAtom);
+    const [questions, setQuestions] = useState(() => getQuestionsByCategory(category, random));
+    const [solved, setSolved] = useState<Set<number>>(new Set());
+    const [index, setIndex] = useState(0);
+    const [picked, setPicked] = useState<string>();
+    const [isWrong, setIsWrong] = useState(false);
+    const [savedProgress, setSavedProgress] = useState<LearnProgress | null>(null);
+    const [isModuleDone, setIsModuleDone] = useState(false);
 
     useEffect(() => {
-        setStorageKey(param as string);
-        checkLocalStorageData();
-
-        const randomQuestionsStorage = localStorage.getItem('pistol_range_random_questions');
-        const randomQuestions = randomQuestionsStorage === 'true';
-
-        setQuestions(getQuestionsByCategory(param as string, randomQuestions));
-    }, []);
-
-    useEffect(() => {
-        if (isStorageItemsExist) {
-            setIsFromBeginModalVisible(true);
-        }
-    }, [isStorageItemsExist]);
-
-    useEffect(() => {
-        if (questions.length !== 0 && !isQuestionsLoaded) {
-            let que = questions.map(x => Object.assign({}, x));
-            que.map(a => {
-                a.possibleAnswer.map(b => b.gradient = ['#94c02b', '#71912a']);
-            });
-            const question = questions.filter(x => x.displayId == 1)[0];
-            setActualQuestion(question);
-            setIsQuestionLoaded(true);
-        } else {
-            if (questions.length !== 0) {
-                const question = questions.filter(x => x.actualAnswer == undefined)[0];
-                setActualQuestion(question);
-                setIsQuestionLoaded(true);
-            }
-        }
-    }, [questions]);
-
-    useEffect(() => {
-        if (actualQuestion.displayId == 1) {
-            setNextButtonDisabled(false);
-            setPreviousButtonDisabled(true);
-        } else if (actualQuestion.displayId <= 1) {
-            setActualQuestion(questions.filter(x => x.displayId == 1)[0])
-            setNextButtonDisabled(false);
-            setPreviousButtonDisabled(true);
-        } else if (actualQuestion.displayId >= questions.length) {
-            setPreviousButtonDisabled(false);
-            setActualQuestion(questions.filter(x => x.displayId == questions.length)[0])
-        } else {
-            setNextButtonDisabled(false);
-            setPreviousButtonDisabled(false);
-        }
-    }, [actualQuestion]);
-
-    const handleQuit = () => {
-        navigate('/activity-page');
-    }
-
-    const handlePickUp = (option: string) => {
-        if (!actualQuestion.isButtonsDisabled) {
-            actualQuestion.actualAnswer = undefined;
-            actualQuestion.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
-            setActualQuestion({...actualQuestion});
-            actualQuestion.possibleAnswer.filter(x => x.id == option)[0].gradient = ['#ffff2b', '#ffff2a'];
-            actualQuestion.actualAnswer = option;
-            setActualQuestion({...actualQuestion});
-        }
-    }
-
-    const handleNextQuestion = () => {
-        let question = actualQuestion;
-        if (actualQuestion.actualAnswer !== undefined) {
-            let nextId = JSON.parse(JSON.stringify(question.displayId));
-            nextId++;
-            let next = questions.filter(x => x.displayId == nextId)[0]
-            if (next === undefined) {
-                if (question.actualAnswer === question.goodAnswer) {
-                    question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#085908', '#28a628'];
-                    setIsSummaryVisible(true);
-                    setActualQuestion({...question});
-                    questions[question.displayId - 1].isButtonsDisabled = true
-                    setQuestions(questions);
-                } else {
-                    question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#500000', '#740000'];
-                    setActualQuestion({...question});
+        let cancelled = false;
+        loadProgress(category, random)
+            .then(progress => {
+                if (!cancelled && progress && progress.solvedIds.length > 0) {
+                    setSavedProgress(progress);
                 }
-            } else {
-                if (!question.isButtonsDisabled) {
-                    const id = question.displayId;
-                    if (id === questions.length) {
-                        setNextButtonDisabled(true);
-                    } else {
-                        setPreviousButtonDisabled(false);
-                    }
-                    if (question.actualAnswer === question.goodAnswer) {
-                        question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#085908', '#28a628'];
-                        questions[id - 1].isButtonsDisabled = true
-                        setQuestions(questions);
-                        next.possibleAnswer.map(x => x.gradient = ['#94c02b', '#71912a']);
-                        setActualQuestion(next);
-                        storeData();
-                    } else {
-                        question.possibleAnswer.filter(x => x.id == question.actualAnswer)[0].gradient = ['#500000', '#740000'];
-                        setActualQuestion({...question});
-                    }
-                } else {
-                    setActualQuestion(next);
-                }
-            }
-        }
+            })
+            .catch(console.error);
+        return () => {
+            cancelled = true;
+        };
+    }, [category, random]);
+
+    const question = questions[index];
+    if (!question) {
+        return <Navigate to="/set-of-questions" replace/>;
     }
 
-    const handlePreviousQuestion = () => {
-        const id = actualQuestion.displayId;
-        let prevId = JSON.parse(JSON.stringify(id));
-        prevId--;
-        let previous = questions.filter(x => x.displayId == prevId)[0]
-        if (id === questions.length) {
-            setNextButtonDisabled(true);
+    const isSolved = solved.has(question.id);
+    const isLast = index === questions.length - 1;
+
+    const goTo = (target: number) => {
+        setIndex(target);
+        setPicked(undefined);
+        setIsWrong(false);
+    };
+
+    const resume = () => {
+        if (savedProgress) {
+            const restored = getQuestionsByIds(savedProgress.questionIds);
+            if (restored.length > 0) {
+                const restoredSolved = new Set(savedProgress.solvedIds);
+                const firstUnsolved = restored.findIndex(q => !restoredSolved.has(q.id));
+                setQuestions(restored);
+                setSolved(restoredSolved);
+                goTo(firstUnsolved === -1 ? restored.length - 1 : firstUnsolved);
+            }
+        }
+        setSavedProgress(null);
+    };
+
+    const startOver = () => {
+        setSavedProgress(null);
+        clearProgress(category, random).catch(console.error);
+    };
+
+    const handlePick = (answerId: string) => {
+        setPicked(answerId);
+        setIsWrong(false);
+    };
+
+    const handleNext = () => {
+        if (isSolved) {
+            if (!isLast) {
+                goTo(index + 1);
+            }
+            return;
+        }
+        if (picked === undefined) {
+            return;
+        }
+        if (picked !== question.goodAnswer) {
+            setIsWrong(true);
+            return;
+        }
+        const nextSolved = new Set(solved).add(question.id);
+        setSolved(nextSolved);
+        saveProgress(category, random, {questionIds: questions.map(q => q.id), solvedIds: Array.from(nextSolved)})
+            .catch(console.error);
+        if (isLast) {
+            setIsModuleDone(true);
         } else {
-            setPreviousButtonDisabled(false);
-        }
-        setActualQuestion(previous);
-    }
-
-    useEffect(() => {
-        if (!fromBeginUserResponse) {
-            readLocalStorageData();
-        }
-    }, [fromBeginUserResponse, fromBeginEvent]);
-
-    useEffect(() => {
-        if (storageKey != '') {
-            checkLocalStorageData();
-        }
-    }, [storageKey]);
-
-    const storeData = () => {
-        if (storageKey != '') {
-            try {
-                let tmpQuestions = JSON.parse(JSON.stringify(questions));
-                let forSave = {
-                    questions: tmpQuestions, actualQuestion: actualQuestion
-                } as StorageObject;
-                localStorage.setItem(storageKey, JSON.stringify(forSave));
-            } catch (error) {
-                console.error(error);
-            }
+            goTo(index + 1);
         }
     };
 
-    const checkLocalStorageData = () => {
-        try {
-            const item = localStorage.getItem(storageKey);
-            if (item !== null) {
-                let parsed = JSON.parse(item) as StorageObject;
-                setStoredQuestionProgress('(' + parsed.actualQuestion.displayId + '/' + parsed.questions.length + ')');
-                setQuestions(parsed.questions);
-                setActualQuestion(
-                    parsed.actualQuestion
-                )
-                setIsStorageItemsExist(true);
-            }
-        } catch (error) {
-            console.error(error);
+    const stateOf = (answerId: string): AnswerState => {
+        if (isSolved) {
+            return answerId === question.goodAnswer ? "correct" : "idle";
         }
-    }
-
-    const readLocalStorageData = () => {
-        try {
-            const item = localStorage.getItem(storageKey);
-            if (item !== null) {
-                let parsed = JSON.parse(item) as StorageObject;
-                setQuestions(parsed.questions);
-            }
-        } catch (error) {
-            console.error(error);
+        if (answerId !== picked) {
+            return "idle";
         }
-    }
+        return isWrong ? "wrong" : "picked";
+    };
 
-    return (<div>
-        <EndOfModuleModal/>
-        <FromBeginModal/>
+    return (
+        <main className="page">
+            <QuestionCard title={formatCategory(category)}
+                          position={index + 1}
+                          total={questions.length}
+                          question={question}
+                          disabled={isSolved}
+                          stateOf={stateOf}
+                          onPick={handlePick}/>
 
-        <div style={{display: "flex", background: "linear-gradient(to right, #94c02b, #71912a)", flex:1}}>
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-            }}>
-                <div>
-                    <img style={{
-                        width: '70%',
-                        height: 'auto'
-                    }} src={banger} alt="Logo"/>
-                </div>
+            <QuestionNav onPrevious={() => goTo(index - 1)}
+                         previousDisabled={index === 0}
+                         onNext={handleNext}
+                         nextDisabled={isSolved && isLast}
+                         center={{icon: <HomeIcon/>, label: "Strona główna", onClick: () => navigate("/activity-page")}}/>
 
-                <div style={{
-                    color: 'black',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    display: 'flex',
-                    width: '70%'
-                }}>
-                    {actualQuestion.displayId}/{questions.length}
-                </div>
-            </div>
-            <div style={{color: 'black', width: '90%',
-                display:'inline-block',
-                textAlign:'center',
-            }}>
-                {replaceUnderscoreWithSpace(param ? param : '').toUpperCase()}
-            </div>
-        </div>
+            <AppModal open={savedProgress !== null}>
+                <p>OD NOWA?</p>
+                <p>Poprzedni progres: ({savedProgress?.solvedIds.length}/{savedProgress?.questionIds.length})</p>
+                <MenuButton onClick={startOver}>Tak</MenuButton>
+                <MenuButton onClick={resume}>Nie</MenuButton>
+            </AppModal>
 
-        <div style={{color: '#98c135'}}>
-            {actualQuestion.value}{actualQuestion.paragraph}
-        </div>
-
-        <div onClick={() => handlePickUp('a')}>
-            <AnswerField disabled={actualQuestion.isButtonsDisabled}
-                         gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].gradient}
-                         option={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].id}
-                         possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'a')[0].value}
-                         isPicked={false}/>
-        </div>
-
-        <div onClick={() => handlePickUp('b')}>
-            <AnswerField disabled={actualQuestion.isButtonsDisabled}
-                         gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].gradient}
-                         option={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].id}
-                         possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'b')[0].value}
-                         isPicked={false}/>
-        </div>
-
-        <div onClick={() => handlePickUp('c')}>
-            <AnswerField disabled={actualQuestion.isButtonsDisabled}
-                         gradientColours={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].gradient}
-                         option={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].id}
-                         possibleAnswer={actualQuestion.possibleAnswer.filter(x => x.id === 'c')[0].value}
-                         isPicked={false}/>
-        </div>
-
-        <div style={{display: 'flex', justifyContent: 'center'}}>
-            <button style={navButtonStyle}
-                    onClick={() => handlePreviousQuestion()} disabled={previousDisabled}>
-                <ArrowBackIcon/>
-            </button>
-            <button style={navButtonStyle} onClick={() => handleQuit()}>
-                <HomeIcon/>
-            </button>
-            <button style={navButtonStyle} onClick={() => handleNextQuestion()} disabled={nextButtonDisabled}>
-                <ArrowForwardIcon/>
-            </button>
-        </div>
-    </div>);
-}
-
-const navButtonStyle = {
-    color: 'black',
-    padding: 15,
-    margin: 10,
-    fontFamily: 'Bahnschrift',
-    fontSize: 20,
-    background: "linear-gradient(to right, #94c02b, #71912a)",
-    border: 'none',
-    borderRadius: 10,
-    cursor: 'pointer',
-    outline: 'none',
-    width: '100%',
-    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)'
+            <AppModal open={isModuleDone} onClose={() => setIsModuleDone(false)}>
+                <p>UKOŃCZONO MODUŁ</p>
+                <img src={passed} alt=""/>
+                <MenuButton onClick={() => setIsModuleDone(false)}>ZAMKNIJ</MenuButton>
+            </AppModal>
+        </main>
+    );
 }
 
 export default LearnPage;

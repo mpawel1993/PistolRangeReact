@@ -1,13 +1,38 @@
 @font-face {
   font-family: 'Bahnschrift';
   src: url('./assets/fonts/BAHNSCHRIFT.TTF') format('truetype');
+  font-display: swap;
+}
+
+:root {
+  --green: linear-gradient(to right, #94c02b, #71912a);
+  --text: #98c135;
+  --dark: #2b2a29;
+  --gap: clamp(8px, 2vw, 14px);
+  --radius: 10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
-  font-family: 'Bahnschrift', sans-serif;
-  background-color: black;
+  margin: 0;
+  background: #000;
+  color: var(--text);
+  font-family: 'Bahnschrift', system-ui, sans-serif;
+  font-size: clamp(16px, 0.8vw + 13px, 20px);
+  line-height: 1.35;
+  -webkit-tap-highlight-color: transparent;
 }
 
-button:disabled {
-  color: black;
+button {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }

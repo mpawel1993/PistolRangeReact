@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+# Pistol Range
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Nauka do egzaminu na pozwolenie na broń: tryb nauki po kategoriach (opcjonalnie w losowej kolejności) z zapisem postępu oraz 30-minutowy egzamin próbny (20 pytań, 18 do zaliczenia).
 
-## Available Scripts
+Static React app (Create React App) — no backend. Questions are bundled from `src/assets/questions.json`; learning progress is stored in an in-browser SQLite database (sql.js / WebAssembly), persisted to IndexedDB.
 
-In the project directory, you can run:
+## Development
 
-### `npm start`
+```bash
+npm install
+npm start          # http://localhost:3000
+npm test           # watch mode; CI=true npm test -- --watchAll=false for a single run
+npm run build      # production build in build/
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Deploying to GitHub Pages
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The build is path-independent (`"homepage": "."`, `HashRouter`, the WASM file emitted as a hashed asset), so it works from any subdirectory such as `https://<user>.github.io/PistolRangeReact/`.
 
-### `npm test`
+**Automatic (recommended):** `.github/workflows/deploy.yml` tests, builds and deploys on every push to `dev`.
+One-time setup: GitHub → Settings → Pages → Source: **GitHub Actions**.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Manual:** with Pages source set to *Deploy from a branch → `gh-pages` / root*:
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm run deploy     # builds, then pushes build/ to the gh-pages branch
+```

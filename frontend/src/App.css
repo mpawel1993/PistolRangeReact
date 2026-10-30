@@ -1,38 +1,239 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+.app {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
   min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: var(--gap);
+}
+
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.welcome {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.welcome img {
+  width: 90%;
+  max-height: 90dvh;
+  object-fit: contain;
+}
+
+.hero {
+  display: block;
+  width: min(90%, 700px);
+  margin: var(--gap) auto;
+}
+
+.hero--small {
+  width: min(60%, 420px);
+  margin-block: 0;
+}
+
+/* Buttons */
+
+.menu-button,
+.nav-button,
+.answer__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--green);
+  color: var(--dark);
+  text-align: center;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.menu-button:hover,
+.nav-button:hover:enabled,
+.answer__button:hover:enabled {
+  filter: brightness(1.1);
+}
+
+.menu-button:focus-visible,
+.nav-button:focus-visible,
+.answer__button:focus-visible,
+.welcome:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.nav-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.answer__button:disabled {
+  color: #000;
+  cursor: default;
+}
+
+/* Menus */
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.menu--grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+}
+
+.menu-footer {
+  display: flex;
+  gap: var(--gap);
+}
+
+.menu-footer .menu-button {
+  flex: 1;
+}
+
+.menu-footer .menu-button--icon {
+  flex: 0 0 25%;
+}
+
+/* Question */
+
+.question-header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: var(--green);
+  color: #000;
+}
+
+.question-header__badge {
+  flex: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: clamp(64px, 14vw, 120px);
 }
 
-.App-link {
-  color: #61dafb;
+.question-header__title {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.question-text {
+  margin: 0;
+  font-size: 1.1em;
+}
+
+.question-text__paragraph {
+  opacity: 0.75;
+}
+
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.answer {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.answer__letter {
+  flex: none;
+  width: 1.2em;
+  color: #fff;
+  font-size: clamp(28px, 6vw, 40px);
+  text-align: center;
+}
+
+.answer__letter--marked {
+  text-decoration: underline;
+}
+
+.answer__button {
+  flex: 1;
+  color: #000;
+}
+
+.answer__button[data-state="picked"] {
+  background: linear-gradient(to right, #ffff2b, #ffff2a);
+}
+
+.answer__button[data-state="correct"] {
+  background: linear-gradient(to right, #085908, #28a628);
+  color: #fff;
+}
+
+.answer__button[data-state="wrong"] {
+  background: linear-gradient(to right, #500000, #740000);
+  color: #fff;
+}
+
+.answer__button[data-state="neutral"] {
+  background: linear-gradient(to right, #6e736e, #a1a6a1);
+}
+
+.question-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+  margin-top: auto;
+  padding-top: var(--gap);
+}
+
+/* Modal */
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--gap);
+  width: min(90vw, 500px);
+  max-height: 90dvh;
+  overflow-y: auto;
+  padding: clamp(16px, 4vw, 32px);
+  border: 2px solid #fff;
+  border-radius: var(--radius);
+  background: #000;
+  color: var(--text);
+  text-align: center;
+  outline: none;
+}
+
+.modal p {
+  margin: 0;
+}
+
+.result--good {
+  color: #28a628;
+}
+
+.result--bad {
+  color: #e53935;
 }

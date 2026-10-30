@@ -1,25 +1,26 @@
 import questionsData from "../assets/questions.json";
-import {ExamDetails, Question, WeaponLawCategory} from "../model/model";
+import {Answer, ALL_CATEGORIES, Question} from "../model";
 
-// Shape of a question as stored in the embedded data file.
 interface RawQuestion {
-    id: string | null;
-    displayId: number | null;
+    legacyId: number;
     value: string;
     goodAnswer: string;
     paragraph: string;
-    legacyId: number | null;
     category: string;
-    possibleAnswer: { id: string; value: string }[];
+    possibleAnswer: Answer[];
 }
 
-const ALL_QUESTIONS = questionsData as RawQuestion[];
+const QUESTIONS: Question[] = (questionsData as RawQuestion[]).map(
+    ({legacyId, value, goodAnswer, paragraph, category, possibleAnswer}) =>
+        ({id: legacyId, value, goodAnswer, paragraph, category, possibleAnswer})
+);
 
-// Previously served by GET /exam/details (hardcoded defaults on the server).
-const EXAM_DETAILS: ExamDetails = {
-    examDuration: 1800,
+const QUESTIONS_BY_ID = new Map(QUESTIONS.map(question => [question.id, question]));
+
+export const EXAM = {
+    durationSeconds: 1800,
+    questionCount: 20,
     goodAnswersToPass: 18,
-    answersCount: 20,
 };
 
 function shuffle<T>(array: T[]): T[] {
@@ -31,33 +32,16 @@ function shuffle<T>(array: T[]): T[] {
     return copy;
 }
 
-// Mirrors the server's behaviour: assign a 1-based displayId to each question.
-function withDisplayIds(questions: RawQuestion[]): Question[] {
-    return questions.map((question, index) => ({
-        ...question,
-        displayId: index + 1,
-    })) as unknown as Question[];
+export function loadExamQuestions(): Question[] {
+    return shuffle(QUESTIONS).slice(0, EXAM.questionCount);
 }
 
-// Replaces GET /exam/details
-export function getExamDetails(): ExamDetails {
-    return EXAM_DETAILS;
-}
-
-// Replaces GET /exam/load
-export function loadQuestionsForExam(): Question[] {
-    const shuffled = shuffle(ALL_QUESTIONS);
-    return withDisplayIds(shuffled.slice(0, EXAM_DETAILS.answersCount));
-}
-
-// Replaces GET /learn/category/{category}/{randomQuestions}
-export function getQuestionsByCategory(category: string, randomQuestions: boolean): Question[] {
+export function getQuestionsByCategory(category: string, random: boolean): Question[] {
     const upper = category.toUpperCase();
-    let filtered = upper === WeaponLawCategory.WSZYSTKIE
-        ? [...ALL_QUESTIONS]
-        : ALL_QUESTIONS.filter((question) => question.category === upper);
-    if (randomQuestions) {
-        filtered = shuffle(filtered);
-    }
-    return withDisplayIds(filtered);
+    const filtered = upper === ALL_CATEGORIES ? QUESTIONS : QUESTIONS.filter(question => question.category === upper);
+    return random ? shuffle(filtered) : filtered;
+}
+
+export function getQuestionsByIds(ids: number[]): Question[] {
+    return ids.map(id => QUESTIONS_BY_ID.get(id)).filter((question): question is Question => question !== undefined);
 }

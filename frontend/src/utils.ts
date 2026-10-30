@@ -1,3 +1,1 @@
-export const replaceUnderscoreWithSpace = (str: string) => {
-    return str.replace(/_/g, " ");
-}
+export const formatCategory = (category: string) => category.replace(/_/g, " ").toUpperCase();

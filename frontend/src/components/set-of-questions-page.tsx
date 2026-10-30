@@ -1,70 +1,33 @@
-import Field from "./field";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
-import learningImage from '../assets/learning_image.png';
-import {WeaponLawCategory} from "../model/model";
-import {replaceUnderscoreWithSpace} from "../utils";
+import MenuButton from "./menu-button";
+import learningImage from "../assets/learning_image.png";
+import {ALL_CATEGORIES, CATEGORIES} from "../model";
+import {formatCategory} from "../utils";
 
-const SetOfQuestionsPage = () => {
-
+export const SetOfQuestionsPage = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const query = searchParams.get("random") === "true" ? "?random=true" : "";
 
-    return (<div>
-        <div style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            marginBottom: '10px'
-        }}>
-            <img style={{
-                width: '50%',
-                height: 'auto'
-            }} src={learningImage} alt="Logo"/>
-        </div>
-        <div onClick={() => navigate('/nauka/' + WeaponLawCategory.USTAWA_O_BRONI_I_AMUNICJI.toLowerCase())}>
-            <Field text={replaceUnderscoreWithSpace(WeaponLawCategory.USTAWA_O_BRONI_I_AMUNICJI)}/>
-        </div>
-        <div onClick={() => navigate('/nauka/' + WeaponLawCategory.PRZECHOWYWANIE_I_NOSZENIE_BRONI.toLowerCase())}>
-            <Field text={replaceUnderscoreWithSpace(WeaponLawCategory.PRZECHOWYWANIE_I_NOSZENIE_BRONI)}/>
-        </div>
-        <div
-            onClick={() => navigate('/nauka/' + WeaponLawCategory.PRZEWOZENIE_BRONI_SRODKAMI_TRANSPORTU_PUBLICZNEGO.toLowerCase())}>
-            <Field
-                text={replaceUnderscoreWithSpace(WeaponLawCategory.PRZEWOZENIE_BRONI_SRODKAMI_TRANSPORTU_PUBLICZNEGO)}/>
-        </div>
-        <div onClick={() => navigate('/nauka/' + WeaponLawCategory.BEZPIECZENSTWO_NA_STRZELNICACH.toLowerCase())}>
-            <Field text={replaceUnderscoreWithSpace(WeaponLawCategory.BEZPIECZENSTWO_NA_STRZELNICACH)}/>
-        </div>
-        <div onClick={() => navigate('/nauka/' + WeaponLawCategory.SANKCJE_KARNE.toLowerCase())}>
-            <Field text={replaceUnderscoreWithSpace(WeaponLawCategory.SANKCJE_KARNE)}/>
-        </div>
-        <div
-            onClick={() => navigate('/nauka/' + WeaponLawCategory.OBRONA_KONIECZNA_I_STAN_WYZSZEJ_KONIECZNOSCI.toLowerCase())}>
-            <Field text={replaceUnderscoreWithSpace(WeaponLawCategory.OBRONA_KONIECZNA_I_STAN_WYZSZEJ_KONIECZNOSCI)}/>
-        </div>
+    const open = (category: string) => navigate(`/nauka/${category.toLowerCase()}${query}`);
 
-        <div style={{display: "flex", gap: "10px"}}>
-            <button style={navButtonStyle} onClick={() => navigate('/activity-page')}>
-                <HomeIcon/>
-            </button>
-
-            <div style={{
-                flex: 1,
-            }} onClick={() => navigate('/nauka/' + WeaponLawCategory.WSZYSTKIE.toLowerCase())}>
-                <Field text={WeaponLawCategory.WSZYSTKIE}/>
+    return (
+        <main className="page">
+            <img className="hero hero--small" src={learningImage} alt="Nauka"/>
+            <div className="menu menu--grid">
+                {CATEGORIES.map(category => (
+                    <MenuButton key={category} onClick={() => open(category)}>{formatCategory(category)}</MenuButton>
+                ))}
             </div>
-        </div>
-
-    </div>);
-}
-
-const navButtonStyle = {
-    flex: 0.5,
-    marginBottom: 10,
-    background: "linear-gradient(to right, #94c02b, #71912a)",
-    border: 'none',
-    cursor: 'pointer',
-    outline: 'none',
+            <div className="menu-footer">
+                <MenuButton className="menu-button--icon" label="Strona główna" onClick={() => navigate("/activity-page")}>
+                    <HomeIcon/>
+                </MenuButton>
+                <MenuButton onClick={() => open(ALL_CATEGORIES)}>{ALL_CATEGORIES}</MenuButton>
+            </div>
+        </main>
+    );
 }
 
 export default SetOfQuestionsPage;
