@@ -230,6 +230,24 @@
   margin: 0;
 }
 
+.update-banner {
+  position: fixed;
+  left: 50%;
+  bottom: var(--gap);
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  width: min(calc(100% - 2 * var(--gap)), 600px);
+  padding: var(--gap);
+  border: 2px solid #fff;
+  border-radius: var(--radius);
+  background: #000;
+  text-align: center;
+}
+
 .result--good {
   color: #28a628;
 }

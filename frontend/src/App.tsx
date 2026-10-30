@@ -5,6 +5,7 @@ import ActivityPage from "./components/activity-page";
 import SetOfQuestionsPage from "./components/set-of-questions-page";
 import LearnPage from "./components/learn-page";
 import ExamPage from "./components/exam-page";
+import UpdateBanner from "./components/update-banner";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path="*" element={<Navigate to="/" replace/>}/>
                 </Routes>
             </HashRouter>
+            <UpdateBanner/>
         </div>
     );
 }

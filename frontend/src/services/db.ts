@@ -42,6 +42,13 @@ function idb<T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBReq
     });
 }
 
+// Without this the browser may evict IndexedDB under storage pressure (and Safari does after 7 days of inactivity).
+function requestPersistentStorage() {
+    navigator.storage?.persisted?.()
+        .then(persisted => persisted || navigator.storage.persist())
+        .catch(console.error);
+}
+
 let dbPromise: Promise<Database> | undefined;
 let writeQueue = Promise.resolve();
 
@@ -53,6 +60,7 @@ function getDb(): Promise<Database> {
         ]);
         const db = saved ? new SQL.Database(saved) : new SQL.Database();
         db.run(SCHEMA);
+        requestPersistentStorage();
         return db;
     })();
     return dbPromise;

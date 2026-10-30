@@ -4,6 +4,8 @@ Nauka do egzaminu na pozwolenie na broń: tryb nauki po kategoriach (opcjonalnie
 
 Static React app (Create React App) — no backend. Questions are bundled from `src/assets/questions.json`; learning progress is stored in an in-browser SQLite database (sql.js / WebAssembly), persisted to IndexedDB.
 
+The app is a PWA: after the first visit it works fully offline and can be installed to the home screen. When a new version is deployed, a "Dostępna nowa wersja" banner offers a reload. The service worker only runs in production builds (`npm run build`), not under `npm start`.
+
 ## Development
 
 ```bash
