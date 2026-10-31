@@ -19,6 +19,16 @@ Polish firearms-license exam trainer. Standalone React app in `frontend/` (CRA 5
 - Answer colours are derived from state (`AnswerState` → `data-state` attribute styled in `App.css`); question objects are never mutated.
 - Styling: plain CSS in `index.css` (globals/variables) and `App.css` (components), flexbox/grid, mobile-first. No inline style objects.
 
+## Tests
+
+- `components/learn-page.test.tsx`, `exam-page.test.tsx` — exact answer states (`data-state`), locking, navigation, saving/resuming, grading, timer. `db` is mocked; the exam's random draw is replaced with a fixed question list.
+- `components/navigation-monkey.test.tsx` — seeded random clicking (including on disabled buttons) checked after every click against a small reference model. A failure prints the seed, step and last actions to replay it. Slowest suite (~30 s); adjust `SEEDS`/`STEPS` there.
+- `answer-colors.test.ts` — reads `App.css`/`index.css` to assert the colour behind each answer state (jsdom does not apply CSS). Update it when changing colours.
+- `services/db.test.ts` — real sql.js + `fake-indexeddb` under the node environment; a fresh module instance simulates a page reload.
+- `services/question-service.test.ts` — question bank integrity and selection.
+- Shared helpers live in `src/test-utils.tsx` (direct DOM queries there are intentional, for speed and to keep test files lint-clean).
+- When behaviour changes on purpose, update the reference models in the monkey test together with the component.
+
 ## GitHub Pages constraints
 
 - Keep `"homepage": "."` and `HashRouter` — the app must work from a subdirectory without server rewrites.

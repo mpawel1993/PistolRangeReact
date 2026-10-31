@@ -54,7 +54,8 @@
     ]
   },
   "devDependencies": {
-    "@types/sql.js": "^1.4.11"
+    "@types/sql.js": "^1.4.11",
+    "fake-indexeddb": "^6.2.7"
   },
   "jest": {
     "moduleNameMapper": {
